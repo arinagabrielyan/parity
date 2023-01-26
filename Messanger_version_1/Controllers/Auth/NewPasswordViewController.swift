@@ -45,3 +45,5 @@ class NewPasswordViewController: UIViewController {
         navigationController?.pushViewController(loginViewController, animated: true)
     }
 }
+
+//small change
