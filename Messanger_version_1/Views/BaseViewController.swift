@@ -36,4 +36,20 @@ class BaseViewController: UIViewController {
         activityIndicator.stopAnimating()
         activityIndicator.isHidden = true
     }
+
+    func showAlert(
+        title: String?,
+        message: String?,
+        button: String,
+        buttonStyle: UIAlertAction.Style = .default,
+        alertStyle: UIAlertController.Style = .alert,
+        handler: ((UIAlertAction) -> Void)? = nil
+    ) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: alertStyle)
+        let action = UIAlertAction(title: button, style: buttonStyle, handler: handler)
+
+        alert.addAction(action)
+
+        present(alert, animated: true)
+    }
 }

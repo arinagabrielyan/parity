@@ -8,7 +8,7 @@
 import UIKit
 import LocalAuthentication
 
-class PrivateNotesViewController: UIViewController {
+class PrivateNotesViewController: BaseViewController {
     @IBOutlet weak var coverView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addButton: UIBarButtonItem!

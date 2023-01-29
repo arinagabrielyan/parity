@@ -39,7 +39,6 @@ final class FirebaseManager {
     static func resetPassword(email: String, completion: @escaping ((Result<Bool, Error>) -> Void)) {
         FirebaseAuth.Auth.auth().sendPasswordReset(withEmail: email) { error in
             if let error {
-                debugPrint(#function + error.localizedDescription)
                 completion(.failure(error))
             } else {
                 completion(.success(true))
