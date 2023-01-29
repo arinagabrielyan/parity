@@ -19,7 +19,13 @@ class ForgotPasswordViewController: BaseViewController {
             switch result {
                 case .success(_):
                     self.hideActivityIndicator()
-                    self.navigateToNewPasswordViewController()
+
+                    self.showAlert(
+                        title: "Success",
+                        message: "Link for recover password sent to \(emailToSend)",
+                        button: "Ok") { _ in
+                            self.popToAuthNavigationController()
+                        }
                 case .failure(let error):
                     self.hideActivityIndicator()
                     self.showAlert(title: "Error", message: error.localizedDescription, button: "Ok")
@@ -27,9 +33,7 @@ class ForgotPasswordViewController: BaseViewController {
         }
     }
 
-    private func navigateToNewPasswordViewController() {
-        let newPasswordViewController = UIStoryboard.main.instantiateViewController(withIdentifier: "NewPasswordViewController") as! NewPasswordViewController
-
-        navigationController?.pushViewController(newPasswordViewController, animated: true)
+    private func popToAuthNavigationController() {
+        navigationController?.popToRootViewController(animated: true)
     }
 }

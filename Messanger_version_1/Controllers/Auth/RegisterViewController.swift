@@ -66,21 +66,3 @@ class RegisterViewController: BaseViewController {
         navigationController?.pushViewController(mainScreen, animated: true)
     }
 }
-
-
-extension UIViewController {
-    func showAlert(
-        title: String?,
-        message: String?,
-        button: String,
-        buttonStyle: UIAlertAction.Style = .default,
-        alertStyle: UIAlertController.Style = .alert
-    ) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: alertStyle)
-        let action = UIAlertAction(title: button, style: buttonStyle)
-
-        alert.addAction(action)
-
-        present(alert, animated: true)
-    }
-}
