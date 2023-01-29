@@ -17,8 +17,13 @@ final class DatabaseManager {
         return dateFormatter
     }
 
-    public func update(user: User, completion: @escaping ((Result<Bool, Error>) -> Void)) {
-        guard let email = LocalStorageManager.shared.email else { return }
+    public enum UpdateUser {
+        case username(String)
+        case proflieImageUrl(String)
+    }
+
+    public func update(user: UpdateUser, completion: @escaping ((Result<Bool, Error>) -> Void)) {
+        guard let email = LocaleStorageManager.shared.email else { return }
 
         self.database.child("users").observeSingleEvent(of: .value) { snapshot, _ in
 
@@ -26,12 +31,23 @@ final class DatabaseManager {
 
             var users = usersDict.filter { $0["user_email"] as! String != email }
 
+            var updatedUser: [String: String] = [:]
 
-            let updatedUser: [String: String] = [
-                "username": user.username,
-                "user_email": user.email,
-                "user_url": user.url
-            ]
+            switch user {
+                case .username(let username):
+                    updatedUser = [
+                        "user_name": username,
+                        "user_email": email,
+                        "user_profile_image_url": LocaleStorageManager.shared.profileImageUrl ?? ""
+                    ]
+                case .proflieImageUrl:
+                    updatedUser = [
+                        "user_name": LocaleStorageManager.shared.username ?? "",
+                        "user_email": email,
+                        "user_profile_image_url": LocaleStorageManager.shared.profileImageUrl ?? ""
+                    ]
+
+            }
 
             users.append(updatedUser)
 
@@ -53,8 +69,9 @@ final class DatabaseManager {
 
             self.database.child("users").observeSingleEvent(of: .value) { snapshot, _ in
                 let newUser: [String: String] = [
-                        "username": user.username,
+                        "user_name": user.username,
                         "user_email": user.email,
+                        "user_profile_image_url": user.profileImageUrl
                 ]
 
                 if var usersCollection = snapshot.value as? [[String: String]] {
@@ -70,8 +87,9 @@ final class DatabaseManager {
                     }
                 } else {
                     let newCollection: [[String: String]] = [[
-                            "username": user.username,
+                            "user_name": user.username,
                             "user_email": user.email,
+                            "user_profile_image_url": user.profileImageUrl
                     ]]
 
                     self.database.child("users").setValue(newCollection) { error, _ in
@@ -92,8 +110,27 @@ final class DatabaseManager {
         }
     }
 
+    public func fetchUsers(completion: @escaping ((Result<[User], Error>) -> Void)) {
+        database.child("users").observeSingleEvent(of: .value, with: { snapshot in
+            guard let usersDict = snapshot.value as? [[String: Any]] else {
+                completion(.failure(DatabaseError.fetchUsersError))
+                return
+            }
+
+            let users = usersDict.map {
+                User(
+                    username: $0["user_name"] as! String,
+                    email: $0["user_email"] as! String,
+                    profileImageUrl: $0["user_profile_image_url"] as! String
+                )
+            }
+
+            completion(.success(users))
+        })
+    }
+
     public func save(notes: [Note], completion: @escaping ((Bool) -> Void)) {
-        guard let email = LocalStorageManager.shared.email else { return }
+        guard let email = LocaleStorageManager.shared.email else { return }
 
         let notesToSave: [[String: String]] = notes.map {
             return [
@@ -125,14 +162,13 @@ final class DatabaseManager {
     }
 
     public func fetchNotes(completion: @escaping (([Note]) -> Void)) {
-        guard let email = LocalStorageManager.shared.email else { return }
+        guard let email = LocaleStorageManager.shared.email else { return }
 
         self.database.child("notes/\(email.toDatabaseFormat)").observeSingleEvent(of: .value) { snapshot, _ in
             if let usersCollection = snapshot.value as? [[String: String]] {
                 let notes: [Note] = usersCollection.map {
                     return Note(title: $0["title"]!, note:  $0["note"]!, date:  $0["date"]!)
                 }
-
                 completion(notes)
             } else {
                 completion([])
@@ -141,18 +177,19 @@ final class DatabaseManager {
     }
 
     public func getUserData(for email: String, competion: @escaping ((User?) -> Void)) {
-        database.child("\(email.toDatabaseFormat)").observeSingleEvent(of: .value) { snapshot in
-            guard
-                let userData = snapshot.value as? [String: Any],
-                let userEmail = userData["user_email"] as? String,
-                let username = userData["user_name"] as? String,
-                let userUrl = userData["user_url"] as? String
-            else {
-                competion(nil)
-                return
-            }
+        guard let email = LocaleStorageManager.shared.email else { return }
 
-            competion(User(username: username, email: userEmail, url: userUrl))
+        self.database.child("users").observeSingleEvent(of: .value) { snapshot, text in
+            if let users = snapshot.value as? [[String: String]] {
+
+                for user in users {
+                    if user["user_email"] == email {
+                        competion(User(username: user["user_name"]!, email: email, profileImageUrl: user["user_profile_image_url"]!))
+                    }
+                }
+            } else {
+                competion(nil)
+            }
         }
     }
 
@@ -168,12 +205,21 @@ final class DatabaseManager {
         }
     }
 
-    public func getUsers(completion: @escaping ((Result<[[String: String]], Error>) -> Void)) {
+    public func getUsers(completion: @escaping ((Result<[User], Error>) -> Void)) {
         database.child("users").observeSingleEvent(of: .value, with: { snapshot in
-            guard let users = snapshot.value as? [[String: String]] else {
+            guard let usersDict = snapshot.value as? [ [String: String] ] else {
                 completion(.failure(DatabaseError.fetchUsersError))
                 return
             }
+
+            let users = usersDict.map {
+                User(
+                    username: $0["user_name"]!,
+                    email: $0["user_email"]!,
+                    profileImageUrl: $0["user_profile_image_url"]!
+                )
+            }
+
             completion(.success(users))
         })
     }
@@ -187,8 +233,8 @@ final class DatabaseManager {
         compeletion: @escaping ((Bool) -> Void))
     {
         guard
-            let senderEmail = LocalStorageManager.shared.email,
-            let senderUsername = LocalStorageManager.shared.username
+            let senderEmail = LocaleStorageManager.shared.email,
+            let senderUsername = LocaleStorageManager.shared.username
         else { return }
 
         let referenceToDatabase = database.child("\(senderEmail.toDatabaseFormat)")
@@ -214,8 +260,9 @@ final class DatabaseManager {
 
             let newConversationData = [
                 "id": conversationId,
-                "username": otherUsername,
+                "user_name": otherUsername,
                 "other_user_email": otherUserEmail,
+                "user_image_url": "",
                 "latest_message": [
                     "date": messageDate,
                     "message": message,
@@ -225,8 +272,9 @@ final class DatabaseManager {
 
             let recipient_newConversationData = [
                 "id": conversationId,
-                "username": senderUsername,
+                "user_name": senderUsername,
                 "other_user_email": senderEmail,
+                "user_image_url": LocaleStorageManager.shared.profileImageUrl ?? "",
                 "latest_message": [
                     "date": messageDate,
                     "message": message,
@@ -297,7 +345,7 @@ final class DatabaseManager {
         }
     }
 
-    private func finishCreatingConversation(
+    func finishCreatingConversation(
         conversationId: String,
         username: String,
         firstMessage: Message,
@@ -313,11 +361,11 @@ final class DatabaseManager {
                 break
         }
 
-        let currentEmail = LocalStorageManager.shared.email
+        guard let currentEmail = LocaleStorageManager.shared.email else { return }
         
         let message: [String: Any] = [
             "id": firstMessage.messageId,
-            "username": username,
+            "user_name": username,
             "type": firstMessage.kind.description,
             "content": messageText,
             "date": messageDate,
@@ -348,8 +396,9 @@ final class DatabaseManager {
             let conversations: [Conversation] = value.compactMap({ dict in
                 guard
                     let conversationId = dict["id"] as? String,
-                    let otherUsername = dict["username"] as? String,
+                    let otherUsername = dict["user_name"] as? String,
                     let otherUserEmail = dict["other_user_email"] as? String,
+                    let otherUserImageUrl = dict["user_image_url"] as? String,
                     let latestMessage = dict["latest_message"] as? [String: Any],
                     let date = latestMessage["date"] as? String,
                     let text = latestMessage["message"] as? String,
@@ -359,7 +408,8 @@ final class DatabaseManager {
                         id: "error_id",
                         username: "error_otherUsername",
                         otherUserEmail: "error_otherUserEmail",
-                        latestMessage: .init(date: "error_date", text: "error_message", isRead: false)
+                        latestMessage: .init(date: "error_date", text: "error_message", isRead: false),
+                        profileImageUrl: "error_url"
                     )
                 }
 
@@ -367,7 +417,8 @@ final class DatabaseManager {
                     id: conversationId,
                     username: otherUsername,
                     otherUserEmail: otherUserEmail,
-                    latestMessage: LatestMessage(date: date, text: text, isRead: isRead)
+                    latestMessage: LatestMessage(date: date, text: text, isRead: isRead),
+                    profileImageUrl: otherUserImageUrl
                 )
             })
 
@@ -385,7 +436,7 @@ final class DatabaseManager {
 
             let messages: [Message] = value.compactMap({ dict in
                 guard
-                    let username = dict["username"] as? String,
+                    let username = dict["user_name"] as? String,
                     let _ = dict["is_read"] as? Bool,
                     let messageId = dict["id"] as? String,
                     let content = dict["content"] as? String,
@@ -394,14 +445,14 @@ final class DatabaseManager {
                     let _ = dict["date"] as? String
                 else {
                     return Message(
-                        sender: Sender(photoUrl: "", senderId: "", displayName: ""),
+                        sender: Sender(senderId: "", displayName: ""),
                         messageId: "",
                         sentDate: Date(),
                         kind: .text("")
                     )
                 }
 
-                let sender = Sender(photoUrl: "", senderId: senderEmail, displayName: username)
+                let sender = Sender(senderId: senderEmail, displayName: username)
 
                 return Message(sender: sender, messageId: messageId, sentDate: Date(), kind: .text(content))
             })
@@ -429,13 +480,13 @@ final class DatabaseManager {
             }
 
             guard
-                let senderEmail = LocalStorageManager.shared.email,
-                let senderUsername = LocalStorageManager.shared.username
+                let senderEmail = LocaleStorageManager.shared.email,
+                let senderUsername = LocaleStorageManager.shared.username
             else { return }
 
             let newMessage: [String: Any] = [
                 "id": message.messageId,
-                "username": senderUsername,
+                "user_name": senderUsername,
                 "type": message.kind.description,
                 "content": messageText,
                 "date": dateStrig,
@@ -460,12 +511,6 @@ final class DatabaseManager {
                             return
                         }
 
-                        let updatedValue: [String: Any] = [
-                            "date": dateStrig,
-                            "message": messageText,
-                            "is_read": false
-                        ]
-
                         var targetConversation: [String: Any] = [:]
                         var position = 0
                         for currentUserConversation in currentUserConversations {
@@ -475,6 +520,12 @@ final class DatabaseManager {
                             }
                             position += 1
                         }
+
+                        let updatedValue: [String: Any] = [
+                            "date": dateStrig,
+                            "message": messageText,
+                            "is_read": false
+                        ]
 
                         targetConversation["latest_message"] = updatedValue
                         currentUserConversations[position] = targetConversation
@@ -492,12 +543,6 @@ final class DatabaseManager {
                                     return
                                 }
 
-                                let updatedValue: [String: Any] = [
-                                    "date": dateStrig,
-                                    "message": messageText,
-                                    "is_read": false
-                                ]
-
                                 var targetConversation: [String: Any] = [:]
                                 var position = 0
                                 for otherUserConversation in otherUserConversations {
@@ -508,7 +553,14 @@ final class DatabaseManager {
                                     position += 1
                                 }
 
+                                let updatedValue: [String: Any] = [
+                                    "date": dateStrig,
+                                    "message": messageText,
+                                    "is_read": false
+                                ]
+
                                 targetConversation["latest_message"] = updatedValue
+                                targetConversation["user_image_url"] = LocaleStorageManager.shared.profileImageUrl ?? ""
                                 otherUserConversations[position] = targetConversation
 
                                 self.database.child("\(otherUserEmail.toDatabaseFormat)/conversations").setValue(otherUserConversations) { error, _ in
@@ -543,7 +595,7 @@ final class DatabaseManager {
 //            }
 //
 //            let newMessages = onlyOtherUserMessages.map {
-//               if let username = $0["username"] as? String,
+//               if let username = $0["user_name"] as? String,
 //                    let _ = $0["is_read"] as? Bool,
 //                    let messageId = $0["id"] as? String,
 //                    let content = $0["content"] as? String,

@@ -24,7 +24,7 @@ class ConversationTableViewCell: UITableViewCell {
         userAvatarLabel.layer.borderWidth = 1
     }
 
-    func set(conversation: Conversation, url: URL? = nil) {
+    func set(conversation: Conversation) {
         usernameLabel.text = conversation.username
         lastMessageLabel.text = conversation.latestMessage.text
         dateLabel.text = conversation.latestMessage.date
@@ -32,7 +32,7 @@ class ConversationTableViewCell: UITableViewCell {
         userAvatarLabel.text = conversation.username.first?.uppercased()
         avatarImageView.contentMode = .scaleAspectFill
 
-        guard let url else { return }
+        guard let url = URL(string: conversation.profileImageUrl) else { return }
 
         ImageDownloader.load(url: url) { image in
             guard let image else {

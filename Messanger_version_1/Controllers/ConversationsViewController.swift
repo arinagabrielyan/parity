@@ -11,8 +11,7 @@ import FirebaseAuth
 class ConversationsViewController: BaseViewController {
     @IBOutlet weak var tableView: UITableView!
     private var conversations: [Conversation] = []
-    private var imagesPats: [URL] = []
-    private var currentEmail = LocalStorageManager.shared.email ?? String()
+    private var currentEmail = LocaleStorageManager.shared.email ?? String()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,28 +23,35 @@ class ConversationsViewController: BaseViewController {
         tableView.dataSource = self
         tableView.delegate = self
 
-//        showIndicator()
-//        startListeningForConversation()
+        startListeningForConversation()
+    }
 
-        guard
-            let email = LocalStorageManager.shared.email,
-            let username = LocalStorageManager.shared.username
-        else { return }
+    private func startListeningForConversation() {
 
-//        DatabaseManager.shared.update(user: .init(username: username, email: email)) { result in
-//            switch result {
-//                case .success(let success):
-//                    print("")
-//                case .failure(let failure):
-//                    print("")
-//            }
-//        }
+        showActivityIndicator()
+
+        DatabaseManager.shared.getAllConversations(for: currentEmail) { result in
+            switch result {
+                case .success(let conversations):
+                    self.conversations = conversations
+                    self.hideActivityIndicator()
+                    self.tableView.reloadData()
+                case .failure(let error):
+                    self.hideActivityIndicator()
+                    self.showAlert(
+                        title: "Uppps",
+                        message: error.localizedDescription,
+                        button: "Ok"
+                    )
+                    debugPrint("Error: \(error.localizedDescription)")
+            }
+        }
     }
 
     @IBAction func createNewConverationButtonTapped(_ sender: UIBarButtonItem) {
         let newConversationViewController = NewConversationViewController()
-        newConversationViewController.completion = { [weak self] result in
-            self?.createNewConversation(result: result)
+        newConversationViewController.completion = { [weak self] user in
+            self?.createNewConversation(user: user)
         }
 
         let navigationController = UINavigationController(rootViewController: newConversationViewController)
@@ -53,49 +59,10 @@ class ConversationsViewController: BaseViewController {
        present(navigationController, animated: true)
     }
 
-    private func createNewConversation(result: [String: String]) {
-        guard
-            let otherUserEmail = result["user_email"],
-            let otherUsername = result["username"]
-        else { return }
-
-        let chatViewController = ChatViewController(otherUserEmail: otherUserEmail, otherUsername: otherUsername)
+    private func createNewConversation(user: User) {
+        let chatViewController = ChatViewController(otherUserEmail: user.email, otherUsername: user.username)
 
         navigationController?.pushViewController(chatViewController, animated: true)
-    }
-
-    private func startListeningForConversation() {
-        guard let email = LocalStorageManager.shared.email else { return }
-
-        showActivityIndicator()
-
-        DatabaseManager.shared.getAllConversations(for: email) { result in
-            switch result {
-                case .success(let conversations):
-                    self.conversations = conversations
-
-                    let imagesPats = conversations.map { "\($0.otherUserEmail.toDatabaseFormat)_profile_image.png" }
-
-                    imagesPats.forEach {
-                        StorageManager.shared.downloadURL(with: $0) { result in
-                            switch result {
-                                case .success(let url):
-                                    self.imagesPats.append(url)
-
-                                    DispatchQueue.main.async {
-                                        self.hideActivityIndicator()
-                                        self.tableView.reloadData()
-                                    }
-                                case .failure(let error):
-                                    print("error: \(error.localizedDescription)")
-                            }
-                        }
-                    }
-                case .failure(let error):
-                    self.hideActivityIndicator()
-                    debugPrint("Error: \(error.localizedDescription)")
-            }
-        }
     }
 
     private func dowloadProfileImageUrl(email: String, completion: @escaping ((URL?) -> Void)) {
@@ -121,12 +88,9 @@ extension ConversationsViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationTableViewCell", for: indexPath) as! ConversationTableViewCell
 
+        let conversation = conversations[indexPath.row]
 
-//        let conversation = conversations[indexPath.row]
-//
-//        var path: URL? = nil
-//
-//        cell.set(conversation: conversation, url: path)
+        cell.set(conversation: conversation)
 
         return cell
     }
@@ -136,7 +100,11 @@ extension ConversationsViewController: UITableViewDataSource, UITableViewDelegat
 
         let conversation = conversations[indexPath.row]
 
+        let cell = tableView.cellForRow(at: indexPath) as! ConversationTableViewCell
+
+
         let chatViewController = ChatViewController(otherUserEmail: conversation.otherUserEmail, otherUsername: conversation.username, id: conversation.id)
+        chatViewController.companionAvatar =  cell.avatarImageView.image
 
         chatViewController.title = conversation.username
         navigationController?.pushViewController(chatViewController, animated: true)

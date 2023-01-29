@@ -14,9 +14,8 @@ class ChatListCell: UITableViewCell {
     @IBOutlet weak var statusAndDateLabel: UILabel! // tbd
 
     func set(user: User) {
-        self.avatarImageView.image = user.image
-        self.usernameLabel.text = user.username
-        self.messageLabel.text = user.lastMessage
+//        self.usernameLabel.text = user.username
+//        self.messageLabel.text = user.lastMessage
 //      self.statusAndDateLabel.text = user.statusAndDate // tbd
     }
 }

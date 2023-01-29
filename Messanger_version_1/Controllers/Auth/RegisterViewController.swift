@@ -7,11 +7,10 @@
 
 import UIKit
 
-class RegisterViewController: UIViewController {
+class RegisterViewController: BaseViewController {
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +20,6 @@ class RegisterViewController: UIViewController {
 
     private func setup() {
         title = String.Constants.register
-        activityIndicator.isHidden = true
     }
 
     @IBAction private func registerButtonTapped(_ sender: UIButton) {
@@ -35,16 +33,13 @@ class RegisterViewController: UIViewController {
             FirebaseManager.register(email: email, password: password) { result in
                 switch result {
                     case .success(_):
-                        let user = User(username: username, email: email)
-
-                        LocalStorageManager.shared.email = email
-                        LocalStorageManager.shared.username = username
+                        LocaleStorageManager.shared.email = email
+                        LocaleStorageManager.shared.username = username
 
                         self.hideActivityIndicator()
-
                         self.navigateToMainScreen()
 
-                        DatabaseManager.shared.insert(user: user) { _ in }
+                        DatabaseManager.shared.insert(user: User(username: username, email: email)) { _ in }
                     case .failure(let error):
                         self.hideActivityIndicator()
 
@@ -69,16 +64,6 @@ class RegisterViewController: UIViewController {
     private func navigateToMainScreen() {
         let mainScreen = UIStoryboard.main.instantiateViewController(withIdentifier: "MainScreen") as! MainScreen
         navigationController?.pushViewController(mainScreen, animated: true)
-    }
-
-    private func showActivityIndicator() {
-        self.activityIndicator.isHidden = false
-        self.activityIndicator.startAnimating()
-    }
-
-    private func hideActivityIndicator() {
-        self.activityIndicator.stopAnimating()
-        self.activityIndicator.isHidden = true
     }
 }
 

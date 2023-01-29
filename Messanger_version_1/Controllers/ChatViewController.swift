@@ -15,18 +15,20 @@ class ChatViewController: MessagesViewController {
     private var otherUsername: String
     private var conversationId: String?
     private var messages: [Message] = []
-    private var sender: Sender {
-        let email = LocalStorageManager.shared.email ?? ""
-
-        return Sender(photoUrl: "", senderId: email, displayName: otherUsername)
-    }
+    private var sender: Sender!
     private var isNewConverstaion = true
+
+    public var companionAvatar: UIImage? = nil
+    public var selfAvatarData: Data? = LocaleStorageManager.shared.profileImage
 
     init(otherUserEmail: String, otherUsername: String, id: String? = nil) {
         self.otherUserEmail = otherUserEmail
         self.otherUsername = otherUsername
         self.conversationId = id
         super.init(nibName: nil, bundle: nil)
+
+        self.sender = createSender()
+        self.title = otherUsername
 
         if let conversationId {
             listenForMessages(id: conversationId)
@@ -52,6 +54,12 @@ class ChatViewController: MessagesViewController {
         DispatchQueue.main.async {
             self.messagesCollectionView.reloadData()
         }
+    }
+
+    private func createSender() -> Sender? {
+        guard let email = LocaleStorageManager.shared.email else { return nil }
+
+        return Sender(senderId: email, displayName: otherUsername)
     }
 
     private func generateNewId() -> String {
@@ -93,7 +101,6 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
 
         if isNewConverstaion {
             DatabaseManager.shared.createNewConversation(otherUserEmail: otherUserEmail, otherUsername: otherUsername, firstMessage: message) { success in
-                
                 if success {
                     self.messages.append(message)
                     self.isNewConverstaion = false
@@ -116,6 +123,24 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
         }
 
         inputBar.inputTextView.text = ""
+    }
+
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        var avatar: Avatar
+
+        // working, need redesign
+        avatarView.layer.borderColor = UIColor.green.withAlphaComponent(0.8).cgColor
+        avatarView.layer.borderWidth = 1
+
+        if message.sender.senderId == LocaleStorageManager.shared.email {
+            guard let imageData = selfAvatarData else { return }
+
+            avatar = Avatar(image: UIImage(data: imageData) , initials: "")
+        } else {
+            avatar = Avatar(image: companionAvatar, initials: "")
+        }
+
+        avatarView.set(avatar: avatar)
     }
 
     func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessageKit.MessagesCollectionView) -> MessageKit.MessageType {

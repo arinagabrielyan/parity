@@ -9,10 +9,10 @@ import UIKit
 
 class NewConversationViewController: UIViewController {
     private var searchBar: UISearchBar = .init()
-    private var users: [[String: String]] = []
-    private var results: [[String: String]] = []
+    private var users: [User] = []
+    private var results: [User] = []
     private var hasFetch = false
-    var completion: (([String: String]) -> Void)? = nil
+    var completion: ((User) -> Void)? = nil
 
     private let tableView: UITableView = {
         let tableView = UITableView()
@@ -81,17 +81,14 @@ class NewConversationViewController: UIViewController {
     func filterUser(with term: String) {
         guard hasFetch else { return }
 
-        let email = LocalStorageManager.shared.email
+        let email = LocaleStorageManager.shared.email
 
-        let results: [[String: String]] = users.filter({
-            guard let username = $0["username"]?.lowercased() as? String,
-                  $0["user_email"] != email else { return false }
-
-            return username.hasPrefix(term.lowercased())
-        })
-
-        self.results = results
-
+        results = users.filter { user in
+            if user.email == email {
+                return false
+            }
+            return user.username.hasPrefix(term.lowercased())
+        }
 
         update()
     }
@@ -103,7 +100,8 @@ extension NewConversationViewController: UITableViewDelegate, UITableViewDataSou
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = results[indexPath.row]["username"]
+
+        cell.textLabel?.text = results[indexPath.row].username
 
         return cell
     }
@@ -132,6 +130,7 @@ extension NewConversationViewController: UISearchBarDelegate {
                 switch result {
                     case .success(let users):
                         self.users = users
+                        self.update()
                     case .failure(let error):
                         debugPrint("Error: \(error.localizedDescription)")
                 }

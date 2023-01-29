@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6B1118BC29801CC9005D59E1 /* LocalStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1118BB29801CC9005D59E1 /* LocalStorageManager.swift */; };
+		6B1118BC29801CC9005D59E1 /* LocaleStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1118BB29801CC9005D59E1 /* LocaleStorageManager.swift */; };
 		6B1118DE2980271D005D59E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6B1118DD2980271D005D59E1 /* GoogleService-Info.plist */; };
 		6B1118E329805918005D59E1 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1118E229805918005D59E1 /* ImageDownloader.swift */; };
+		6B11190529834728005D59E1 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B11190429834728005D59E1 /* BaseViewController.swift */; };
 		6B1152982969F61500CCF696 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152972969F61500CCF696 /* AppDelegate.swift */; };
 		6B11529A2969F61500CCF696 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152992969F61500CCF696 /* SceneDelegate.swift */; };
 		6B11529C2969F61500CCF696 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B11529B2969F61500CCF696 /* ChatViewController.swift */; };
@@ -56,9 +57,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6B1118BB29801CC9005D59E1 /* LocalStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageManager.swift; sourceTree = "<group>"; };
+		6B1118BB29801CC9005D59E1 /* LocaleStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleStorageManager.swift; sourceTree = "<group>"; };
 		6B1118DD2980271D005D59E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6B1118E229805918005D59E1 /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
+		6B11190429834728005D59E1 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		6B1152942969F61500CCF696 /* Messanger_version_1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Messanger_version_1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B1152972969F61500CCF696 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6B1152992969F61500CCF696 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				6B1152DD296B783E00CCF696 /* ChatListCell.swift */,
 				6B5DEC10297C4254006A171D /* ContactCell.swift */,
 				6BD53A6C297F25090031E0C6 /* PrivateNotesCell.swift */,
+				6B11190429834728005D59E1 /* BaseViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -240,7 +243,7 @@
 				6B1152C9296A364E00CCF696 /* FirebaseManager.swift */,
 				6B1152CC296A40C200CCF696 /* DatabaseManager.swift */,
 				6B1152E1296F7FD200CCF696 /* StorageManager.swift */,
-				6B1118BB29801CC9005D59E1 /* LocalStorageManager.swift */,
+				6B1118BB29801CC9005D59E1 /* LocaleStorageManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 				6B1152E62971AC1700CCF696 /* Message.swift in Sources */,
 				6B5DEC0F297C27C4006A171D /* AuthNavigationController.swift in Sources */,
 				6B1152E0296F7BFD00CCF696 /* NewConversationViewController.swift in Sources */,
+				6B11190529834728005D59E1 /* BaseViewController.swift in Sources */,
 				6BD53A6B297F01120031E0C6 /* PrivateNotesViewController.swift in Sources */,
 				6BF4271F29761E6F00444AD0 /* LatestMessaage.swift in Sources */,
 				6B1152B7296A004D00CCF696 /* ProfileViewController.swift in Sources */,
@@ -358,7 +362,7 @@
 				6B11529C2969F61500CCF696 /* ChatViewController.swift in Sources */,
 				6B1152EF2972339C00CCF696 /* NewPasswordViewController.swift in Sources */,
 				6BD53A6F297F25870031E0C6 /* CreateNewNoteViewController.swift in Sources */,
-				6B1118BC29801CC9005D59E1 /* LocalStorageManager.swift in Sources */,
+				6B1118BC29801CC9005D59E1 /* LocaleStorageManager.swift in Sources */,
 				6B1152CD296A40C200CCF696 /* DatabaseManager.swift in Sources */,
 				6B1152EA2972270100CCF696 /* ForgotPasswordViewController.swift in Sources */,
 				6B1118E329805918005D59E1 /* ImageDownloader.swift in Sources */,

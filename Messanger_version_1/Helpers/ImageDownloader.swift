@@ -22,4 +22,16 @@ class ImageDownloader {
             }
         }
     }
+
+    static func downloadProfileImage() {
+        guard let url = LocaleStorageManager.shared.profileImageUrl, !url.isEmpty else { return }
+
+        DispatchQueue.global(qos: .background).async {
+            ImageDownloader.load(url: URL(string: url)!) { image in
+                guard let image else { return }
+
+                LocaleStorageManager.shared.profileImage = image.pngData()
+            }
+        }
+    }
 }

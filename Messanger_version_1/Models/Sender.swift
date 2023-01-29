@@ -7,8 +7,7 @@
 
 import MessageKit
 
-struct Sender: SenderType {
-   public var photoUrl: String
+public struct Sender: SenderType {
    public var senderId: String
    public var displayName: String
 }

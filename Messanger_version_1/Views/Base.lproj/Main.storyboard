@@ -925,31 +925,64 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;Username&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mB5-BU-RAJ">
-                                <rect key="frame" x="145.33333333333334" y="328" width="102.66666666666666" height="20"/>
-                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
-                                <nil key="textColor"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="zsJ-Og-fTq">
+                                <rect key="frame" x="96.666666666666686" y="323" width="200" height="73"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JYc-xd-vXp" userLabel="usernameTextField">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="34"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="gfq-pL-lg7"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="usernameTextFieldAction:" destination="nK7-uB-TTl" eventType="editingChanged" id="Txl-lx-UDa"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GCG-vz-LPJ" userLabel="emailTextField">
+                                        <rect key="frame" x="0.0" y="39" width="200" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4nl-hV-F65">
+                                <rect key="frame" x="55" y="370.66666666666669" width="34.666666666666657" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" name="avatarViewBackground"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;Email&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KXQ-nM-QZ6">
-                                <rect key="frame" x="160.66666666666666" y="368" width="71.666666666666657" height="20"/>
-                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VxL-Zx-DTC">
+                                <rect key="frame" x="23.666666666666671" y="331.66666666666669" width="66" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" name="avatarViewBackground"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="22L-fa-TsD">
+                                <rect key="frame" x="303.66666666666669" y="323" width="80" height="34.333333333333314"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Update"/>
+                                <connections>
+                                    <action selector="updateUsernameButtonTapped:" destination="nK7-uB-TTl" eventType="touchUpInside" id="4iC-43-Wvl"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Nn3-UA-Rbw"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="KXQ-nM-QZ6" firstAttribute="top" secondItem="mB5-BU-RAJ" secondAttribute="bottom" constant="20" id="0bp-4k-duC"/>
                             <constraint firstItem="Nn3-UA-Rbw" firstAttribute="bottom" secondItem="CSb-GP-hag" secondAttribute="bottom" constant="33" id="0yS-ao-Phr"/>
+                            <constraint firstItem="zsJ-Og-fTq" firstAttribute="leading" secondItem="VxL-Zx-DTC" secondAttribute="trailing" constant="7" id="2ab-RL-twi"/>
+                            <constraint firstItem="22L-fa-TsD" firstAttribute="centerY" secondItem="JYc-xd-vXp" secondAttribute="centerY" id="5eU-aV-Uq5"/>
+                            <constraint firstItem="zsJ-Og-fTq" firstAttribute="top" secondItem="tVt-y5-umC" secondAttribute="bottom" constant="20" id="DKq-1L-Krl"/>
                             <constraint firstItem="tVt-y5-umC" firstAttribute="top" secondItem="Nn3-UA-Rbw" secondAttribute="top" constant="50" id="Nwv-A4-VAl"/>
+                            <constraint firstItem="22L-fa-TsD" firstAttribute="leading" secondItem="zsJ-Og-fTq" secondAttribute="trailing" constant="7" id="PtY-GF-Wlt"/>
+                            <constraint firstItem="zsJ-Og-fTq" firstAttribute="leading" secondItem="4nl-hV-F65" secondAttribute="trailing" constant="7" id="VRF-I0-F29"/>
                             <constraint firstItem="CSb-GP-hag" firstAttribute="centerX" secondItem="NhW-pw-gEJ" secondAttribute="centerX" id="XW3-IZ-bz7"/>
-                            <constraint firstItem="mB5-BU-RAJ" firstAttribute="centerX" secondItem="Nn3-UA-Rbw" secondAttribute="centerX" id="eqc-3I-ZaD"/>
                             <constraint firstItem="tVt-y5-umC" firstAttribute="centerX" secondItem="NhW-pw-gEJ" secondAttribute="centerX" id="hlk-qd-D9I"/>
-                            <constraint firstItem="KXQ-nM-QZ6" firstAttribute="centerX" secondItem="Nn3-UA-Rbw" secondAttribute="centerX" id="jZ8-0l-N8Y"/>
                             <constraint firstItem="CSb-GP-hag" firstAttribute="centerX" secondItem="Nn3-UA-Rbw" secondAttribute="centerX" id="jcB-vp-T0S"/>
-                            <constraint firstItem="mB5-BU-RAJ" firstAttribute="top" secondItem="tVt-y5-umC" secondAttribute="bottom" constant="25" id="yTf-7w-HA4"/>
+                            <constraint firstItem="zsJ-Og-fTq" firstAttribute="centerX" secondItem="tVt-y5-umC" secondAttribute="centerX" id="kQ2-D5-NeV"/>
+                            <constraint firstItem="VxL-Zx-DTC" firstAttribute="centerY" secondItem="JYc-xd-vXp" secondAttribute="centerY" id="rCg-2j-df2"/>
+                            <constraint firstItem="4nl-hV-F65" firstAttribute="centerY" secondItem="GCG-vz-LPJ" secondAttribute="centerY" id="zqH-6q-ryD"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Profile" id="bXg-7O-DNp"/>
@@ -962,14 +995,15 @@
                     </navigationItem>
                     <connections>
                         <outlet property="avatarImageView" destination="tVt-y5-umC" id="HLs-b1-dLY"/>
-                        <outlet property="emailLabel" destination="KXQ-nM-QZ6" id="wA5-LY-zsW"/>
+                        <outlet property="emailTextField" destination="GCG-vz-LPJ" id="m4q-Ua-PYy"/>
                         <outlet property="saveButton" destination="SNY-Lu-gho" id="UW9-xW-38j"/>
-                        <outlet property="usernameLabel" destination="mB5-BU-RAJ" id="25S-YG-Qpy"/>
+                        <outlet property="updateUsernameButton" destination="22L-fa-TsD" id="41c-WL-xBT"/>
+                        <outlet property="usernameTextField" destination="JYc-xd-vXp" id="w7p-dZ-gAF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SJQ-by-Eih" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7433" y="292"/>
+            <point key="canvasLocation" x="7432.8244274809158" y="291.54929577464787"/>
         </scene>
         <!--Users-->
         <scene sceneID="ebL-M1-wX4">
@@ -996,6 +1030,9 @@
         <image name="key" catalog="system" width="85" height="128"/>
         <image name="person.3.sequence" catalog="system" width="128" height="60"/>
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
+        <namedColor name="avatarViewBackground">
+            <color red="0.55699998140335083" green="0.55699998140335083" blue="0.57599997520446777" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="incomingAudioMessageTint">
             <color red="0.0" green="0.4779999852180481" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

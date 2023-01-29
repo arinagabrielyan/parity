@@ -35,16 +35,19 @@ class LoginViewController: BaseViewController {
 
         if String.validator(email, password) {
             FirebaseManager.login(email: email, password: password) { result in
+                LocaleStorageManager.shared.email = email
 
                 switch result {
                     case .success(_):
                         DatabaseManager.shared.getUserData(for: email) { user in
                             if let user {
-                                LocalStorageManager.shared.email = user.email
-                                LocalStorageManager.shared.username = user.username
+                                LocaleStorageManager.shared.username = user.username
+                                LocaleStorageManager.shared.profileImageUrl = user.profileImageUrl
+
+                                ImageDownloader.downloadProfileImage()
                             }
                         }
-
+                        self.hideActivityIndicator()
                         self.navigateToMainScreen()
                     case .failure(let error):
                         self.hideActivityIndicator()

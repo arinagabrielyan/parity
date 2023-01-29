@@ -39,7 +39,7 @@ class ChatListViewController: UIViewController {
     }
 
     private func startListeningForConversation() {
-        guard let email = LocalStorageManager.shared.email else { return }
+        guard let email = LocaleStorageManager.shared.email else { return }
 
         DatabaseManager.shared.getAllConversations(for: email) { result in
             switch result {
@@ -77,7 +77,7 @@ extension ChatListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let targetUser = conversations[indexPath.row]
 //
-//        guard let email = targetUser[], let username = targetUser["username"] else { return }
+//        guard let email = targetUser[], let username = targetUser["user_name"] else { return }
 //
 //        let chatViewController = ChatViewController(targetEmail: email, username: username)
 //        chatViewController.title = username

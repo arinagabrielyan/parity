@@ -10,4 +10,5 @@ struct Conversation {
     public let username: String
     public let otherUserEmail: String
     public let latestMessage: LatestMessage
+    public let profileImageUrl: String
 }

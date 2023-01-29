@@ -10,10 +10,8 @@ import UIKit
 public struct User {
     let username: String
     let email: String
-    var url: String = ""
- 
-    let lastMessage: String? = nil
-    let image: UIImage? = nil
+    var profileImageUrl: String = ""
+    var conversation: Conversation? = nil
 
     var profileImageName: String {
         return "\(email.toDatabaseFormat)_profile_image.png"

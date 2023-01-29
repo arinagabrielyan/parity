@@ -9,14 +9,13 @@ import UIKit
 
 class ProfileViewController: BaseViewController {
     @IBOutlet weak var avatarImageView: UIImageView!
-    @IBOutlet weak var emailLabel: UILabel!
-    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var updateUsernameButton: UIButton!
+    @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//        downloadProfileImage()
 
         setup()
     }
@@ -38,48 +37,48 @@ class ProfileViewController: BaseViewController {
 
         saveButton.isEnabled = false
 
-        avatarImageView.image = UIImage(named: "icon_black")
+        let image: UIImage?
+
+        if let proflieImage = LocaleStorageManager.shared.profileImage {
+            image = UIImage(data: proflieImage)
+        } else {
+            image = UIImage(named: "icon_black")
+        }
+
+        avatarImageView.image = image
         avatarImageView.contentMode = .scaleToFill
         avatarImageView.isUserInteractionEnabled = true
         avatarImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarTapped)))
 
-        guard
-            let email = LocalStorageManager.shared.email,
-            let username = LocalStorageManager.shared.username
-        else { return }
+        usernameTextField.text = LocaleStorageManager.shared.username
+        emailTextField.text = LocaleStorageManager.shared.email
 
-        emailLabel.text = "Email: " + email
-        usernameLabel.text = "Username: " + username
+        emailTextField.isEnabled = false
+        updateUsernameButton.alpha = 0
     }
 
-    private func downloadProfileImage() {
-        guard let url = LocalStorageManager.shared.profileImageUrl else { return }
-
-        ImageDownloader.load(url: URL(string: url)!) { image in
-            guard let image else { return }
-
-            DispatchQueue.main.async {
-                self.avatarImageView.image = image
-            }
-        }
-    }
-
-    private func uploadProfileImageToDatabase() {
+    private func saveProfileImage() {
         guard
             let image = avatarImageView.image,
             let imageData = image.pngData()
         else { return }
 
-        guard let email = LocalStorageManager.shared.email else { return }
-        let currentUser = User(username: "", email: email)
+        guard
+            let email = LocaleStorageManager.shared.email
+        else { return }
 
-        let fileName = currentUser.profileImageName
+        let fileName = User(username: "", email: email).profileImageName
 
-        StorageManager.shared.deleteData(from: fileName) { _ in // must test!!
+        StorageManager.shared.deleteData(from: fileName) { success in
             StorageManager.shared.uploadProfileImage(with: imageData, fileName: fileName) { result in
                 switch result {
                     case .success(let url):
-                        LocalStorageManager.shared.profileImageUrl = url
+                        LocaleStorageManager.shared.profileImageUrl = url
+
+                        DatabaseManager.shared.update(user: .proflieImageUrl(url)) { _ in }
+
+                        ImageDownloader.downloadProfileImage()
+
                         self.saveButton.isEnabled = false
                         self.hideActivityIndicator()
 
@@ -90,9 +89,36 @@ class ProfileViewController: BaseViewController {
         }
     }
 
+    // MARK: - IBAction methods -
+
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-//        showActivityIndicator()
-        uploadProfileImageToDatabase()
+        showActivityIndicator()
+        saveProfileImage()
+    }
+
+    @IBAction func updateUsernameButtonTapped(_ sender: UIButton) {
+        guard let username = usernameTextField.text else { return }
+
+        showActivityIndicator()
+
+        DatabaseManager.shared.update(user: .username(username)) { result in
+            switch result {
+                case .success(_):
+                    UIView.animate(withDuration: 0.25) {
+                        self.updateUsernameButton.alpha = 0
+                    }
+                    self.hideActivityIndicator()
+                    LocaleStorageManager.shared.username = username
+
+                    DispatchQueue.main.async {
+                        self.usernameTextField.resignFirstResponder()
+                    }
+
+                case .failure(let error):
+                    self.hideActivityIndicator()
+                    debugPrint("Error: ", error.localizedDescription)
+            }
+        }
     }
 
     @IBAction private func logoutButtonTapped(_ sender: UIButton) {
@@ -101,10 +127,26 @@ class ProfileViewController: BaseViewController {
         navigateToMainNavigationController()
     }
 
+    @IBAction func usernameTextFieldAction(_ sender: UITextField) {
+        let oldUsername = LocaleStorageManager.shared.username
+
+        if sender.text == oldUsername {
+            UIView.animate(withDuration: 0.25) {
+                self.updateUsernameButton.alpha = 0
+            }
+            return
+        }
+
+        UIView.animate(withDuration: 0.25) {
+            self.updateUsernameButton.alpha = 1
+        }
+    }
+
     private func logout() {
-        LocalStorageManager.shared.email = nil
-        LocalStorageManager.shared.username = nil
-        LocalStorageManager.shared.profileImageUrl = nil
+        LocaleStorageManager.shared.email = nil
+        LocaleStorageManager.shared.username = nil
+        LocaleStorageManager.shared.profileImageUrl = nil
+        LocaleStorageManager.shared.profileImage = nil
 
         FirebaseManager.signout()
     }

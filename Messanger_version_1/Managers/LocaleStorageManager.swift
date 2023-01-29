@@ -7,9 +7,9 @@
 
 import Foundation
 
-class LocalStorageManager {
+class LocaleStorageManager {
     private let userDefaultsStandard = UserDefaults.standard
-    static let shared = LocalStorageManager()
+    static let shared = LocaleStorageManager()
 
     var email: String? {
         get {
@@ -35,6 +35,15 @@ class LocalStorageManager {
         }
         set {
             userDefaultsStandard.set(newValue, forKey: "profile_image_url")
+        }
+    }
+
+    var profileImage: Data? {
+        get {
+            userDefaultsStandard.value(forKey: "profile_image") as? Data
+        }
+        set {
+            userDefaultsStandard.set(newValue, forKey: "profile_image")
         }
     }
 

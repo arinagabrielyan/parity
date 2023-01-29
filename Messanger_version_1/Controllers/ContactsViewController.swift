@@ -27,17 +27,8 @@ class ContactsViewController: UIViewController {
 
     private func fetchUsers() {
         DatabaseManager.shared.getUsers { result in
-
             switch result {
                 case .success(let users):
-                    let users: [User] = users.compactMap { user in
-                        guard let username = user["username"],
-                              let email = user["user_email"]
-                        else { return nil }
-
-                        return User(username: username, email: email)
-                    }
-
                     self.users = users
                     self.tableView.reloadData()
                 case .failure(let error):
