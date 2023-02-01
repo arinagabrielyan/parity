@@ -25,30 +25,11 @@ class ProfileViewController: BaseViewController {
         setup()
     }
 
-    @objc
-    private func avatarTapped() {
-        presentPhotoActionSheet()
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         avatarImageView.layer.borderWidth = 2
         avatarImageView.layer.borderColor = UIColor.gray.cgColor
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        updateLocalization()
-    }
-
-    func updateLocalization() {
-        title = Localize.account
-        saveButton.title = Localize.save
-        usernameLabel.text = Localize.username
-        languageLabel.text = Localize.language
-        logoutButton.titleLabel?.text = Localize.logout
     }
 
     private func setup() {
@@ -72,6 +53,26 @@ class ProfileViewController: BaseViewController {
 
         emailTextField.isEnabled = false
         updateUsernameButton.alpha = 0
+    }
+
+    @objc
+    private func avatarTapped() {
+        presentPhotoActionSheet()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        updateLocalization()
+    }
+
+    func updateLocalization() {
+        title = Localize.account
+        saveButton.title = Localize.save
+        usernameLabel.text = Localize.username
+        languageLabel.text = Localize.language
+        logoutButton.setTitle(Localize.logout, for: .normal)
+//        updateUsernameButton.setTitle(Localize.logout, for: .normal)
     }
 
     private func saveProfileImage() {
@@ -140,8 +141,12 @@ class ProfileViewController: BaseViewController {
 
     @IBAction private func changeLanguageAction(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
-            case 0: Loci.update(language: .en)
-            case 1: Loci.update(language: .rus)
+            case 0:
+                Loci.update(language: .en)
+                LocaleStorageManager.shared.isEnglishLanguage = true
+            case 1:
+                Loci.update(language: .rus)
+                LocaleStorageManager.shared.isEnglishLanguage = false
             default: break
         }
 
@@ -149,8 +154,9 @@ class ProfileViewController: BaseViewController {
     }
 
     @IBAction private func logoutButtonTapped(_ sender: UIButton) {
-        logout()
+        cleanCredentials()
 
+        FirebaseManager.signout()
         navigateToMainNavigationController()
     }
 
@@ -161,21 +167,24 @@ class ProfileViewController: BaseViewController {
             UIView.animate(withDuration: 0.25) {
                 self.updateUsernameButton.alpha = 0
             }
-            return
-        }
-
-        UIView.animate(withDuration: 0.25) {
-            self.updateUsernameButton.alpha = 1
+        } else {
+            UIView.animate(withDuration: 0.25) {
+                self.updateUsernameButton.alpha = 1
+                self.updateUsernameButton.transform = .init(scaleX: 1.2, y: 1.2)
+            } completion: { _ in
+                UIView.animate(withDuration: 0.25) {
+                    self.updateUsernameButton.transform = .init(scaleX: 1.0, y: 1.0)
+                }
+            }
         }
     }
 
-    private func logout() {
+    private func cleanCredentials() {
         LocaleStorageManager.shared.email = nil
         LocaleStorageManager.shared.username = nil
         LocaleStorageManager.shared.profileImageUrl = nil
         LocaleStorageManager.shared.profileImage = nil
-
-        FirebaseManager.signout()
+        LocaleStorageManager.shared.isEnglishLanguage = nil
     }
 
     private func navigateToMainNavigationController() {
