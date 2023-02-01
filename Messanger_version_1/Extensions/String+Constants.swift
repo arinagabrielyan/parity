@@ -13,3 +13,9 @@ extension String {
         static let register = "Register"
     }
 }
+
+extension String {
+    var toDatabaseFormat: String {
+        replacingOccurrences(of: ".", with: "_").replacingOccurrences(of: "@", with: "_")
+    }
+}
