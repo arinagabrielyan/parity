@@ -633,9 +633,3 @@ final class DatabaseManager {
         case fetchConversationsError
     }
 }
-
-extension String {
-    var toDatabaseFormat: String {
-        replacingOccurrences(of: ".", with: "_").replacingOccurrences(of: "@", with: "_")
-    }
-}
