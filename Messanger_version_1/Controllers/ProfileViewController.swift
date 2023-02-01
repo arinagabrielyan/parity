@@ -13,6 +13,11 @@ class ProfileViewController: BaseViewController {
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var languageLabel: UILabel!
+    @IBOutlet weak var logoutButton: UIButton!
+    @IBOutlet weak var changeLanguageControl: UISegmentedControl!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,11 +37,23 @@ class ProfileViewController: BaseViewController {
         avatarImageView.layer.borderColor = UIColor.gray.cgColor
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        updateLocalization()
+    }
+
+    func updateLocalization() {
+        title = Localize.account
+        saveButton.title = Localize.save
+        usernameLabel.text = Localize.username
+        languageLabel.text = Localize.language
+        logoutButton.titleLabel?.text = Localize.logout
+    }
+
     private func setup() {
-        title = String.Constants.profile
-
+        changeLanguageControl.selectedSegmentIndex = Loci.lang == .en ? 0 : 1
         saveButton.isEnabled = false
-
         let image: UIImage?
 
         if let proflieImage = LocaleStorageManager.shared.profileImage {
@@ -119,6 +136,16 @@ class ProfileViewController: BaseViewController {
                     debugPrint("Error: ", error.localizedDescription)
             }
         }
+    }
+
+    @IBAction private func changeLanguageAction(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+            case 0: Loci.update(language: .en)
+            case 1: Loci.update(language: .rus)
+            default: break
+        }
+
+        updateLocalization()
     }
 
     @IBAction private func logoutButtonTapped(_ sender: UIButton) {

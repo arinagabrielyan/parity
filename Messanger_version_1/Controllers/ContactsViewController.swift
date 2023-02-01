@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ContactsViewController: UIViewController {
+class ContactsViewController: BaseViewController {
     @IBOutlet weak var tableView: UITableView!
     private var users: [User] = []
 
@@ -18,11 +18,13 @@ class ContactsViewController: UIViewController {
         fetchUsers()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        title = Localize.useres
+    }
+
     private func setup() {
         tableView.delegate = self
         tableView.dataSource = self
-
-        title = "Users"
     }
 
     private func fetchUsers() {

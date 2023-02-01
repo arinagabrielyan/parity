@@ -29,6 +29,15 @@ class LocaleStorageManager {
         }
     }
 
+    var isEnglishLanguage: Bool? {
+        get {
+            userDefaultsStandard.value(forKey: "is_english") as? Bool
+        }
+        set {
+            userDefaultsStandard.set(newValue, forKey: "is_english")
+        }
+    }
+
     var profileImageUrl: String? {
         get {
             userDefaultsStandard.value(forKey: "profile_image_url") as? String
