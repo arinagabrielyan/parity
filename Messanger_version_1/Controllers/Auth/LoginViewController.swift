@@ -24,7 +24,7 @@ class LoginViewController: BaseViewController {
     }
     
     private func setup() {
-        title = String.Constants.logIn
+        title = String.Constants.logIn  // need to localize
     }
 
     @IBAction private func loginButtonTapped(_ sender: UIButton) {
@@ -53,9 +53,9 @@ class LoginViewController: BaseViewController {
                         self.hideActivityIndicator()
 
                         self.showAlert(
-                            title: "Authentication error",
+                            title: "Authentication error",  // need to localize
                             message: error.localizedDescription,
-                            button: "Ok"
+                            button: "Ok"  // need to localize
                         )
                 }
             }
@@ -63,9 +63,9 @@ class LoginViewController: BaseViewController {
             self.hideActivityIndicator()
 
             self.showAlert(
-                title: "Login failed",
-                message: "Wrong email or password",
-                button: "Ok"
+                title: "Login failed", // need to localize
+                message: "Wrong email or password", // need to localize
+                button: "Ok"  // need to localize
             )
         }
     }

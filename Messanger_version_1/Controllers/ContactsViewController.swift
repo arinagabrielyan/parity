@@ -19,7 +19,7 @@ class ContactsViewController: BaseViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        title = Localize.useres
+        title = LocalizeStrings.useres
     }
 
     private func setup() {

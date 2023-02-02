@@ -475,6 +475,9 @@ final class DatabaseManager {
             switch message.kind {
                 case .text(let message):
                     messageText = message
+                case .photo(let media):
+                    guard let urlString = media.url?.absoluteString else { return }
+                    messageText = urlString
                 default:
                     break
             }

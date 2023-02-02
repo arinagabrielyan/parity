@@ -5,33 +5,40 @@
 //  Created by Khachatur Sargsyan on 02.02.23.
 //
 
-class Loci {
+class Localize {
     enum Language {
         case en
         case rus
     }
-    static var lang: Language = .en
+    static var language: Language = .en
 
     static func update(language: Language) {
         switch language {
             case .en:
-                Loci.lang = .en
+                Localize.language = .en
             case .rus:
-                Loci.lang = .rus
+                Localize.language = .rus
         }
-    }
-
-    deinit {
-        
     }
 }
 
-class Localize {
-    class var username: String { Loci.lang == .en ? "Username" : "Имя пользователя" }
-    class var language: String { Loci.lang == .en ? "Language" : "Язык" }
-    class var account: String { Loci.lang == .en ? "Account" : "Аккаунт" }
-    class var logout: String { Loci.lang == .en ? "Log out" : "Выйти" }
-    class var useres: String { Loci.lang == .en ? "Users" : "Пользователи" }
-    class var save: String { Loci.lang == .en ? "Save" : "Сохранить" }
+class LocalizeStrings {
+    class var privateNote: String { Localize.language == .en ? "Private Note" : "Частная заметка" }
+    class var username: String { Localize.language == .en ? "Username" : "Имя пользователя" }
+    class var language: String { Localize.language == .en ? "Language" : "Язык" }
+    class var account: String { Localize.language == .en ? "Account" : "Аккаунт" }
+    class var logout: String { Localize.language == .en ? "Log out" : "Выйти" }
+    class var useres: String { Localize.language == .en ? "Users" : "Пользователи" }
+    class var save: String { Localize.language == .en ? "Save" : "Сохранить" }
+    class var chat: String { Localize.language == .en ? "Chat" : "Чат" }
+    class var takePhoto: String { Localize.language == .en ? "Take Photo" : "Фотографировать" }
+    class var choosePhoto: String { Localize.language == .en ? "Choose Photo" : "Выбрать фото" }
+    class var cancel: String { Localize.language == .en ? "Cancel" : "Отмена" }
+    class var unlock: String { Localize.language == .en ? "Unlock" : "Разблокировать" }
+    class var profilePicture: String { Localize.language == .en ? "Profile Picture" : "Изображение профиля" }
+    class var profilePictureMessage: String { Localize.language == .en ? "How would you like to select picture?" : "Как бы вы хотели выбрать картинку?" }
+    class var chechFaceID: String { Localize.language == .en ? "Check Face ID for access to Private Notes?" : "Проверьте Face ID для доступа к личным заметкам" }
+
+
     // must add
 }

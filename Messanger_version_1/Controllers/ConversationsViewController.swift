@@ -26,6 +26,12 @@ class ConversationsViewController: BaseViewController {
         startListeningForConversation()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        title = LocalizeStrings.chat
+    }
+
     private func startListeningForConversation() {
 
         showActivityIndicator()
@@ -38,7 +44,7 @@ class ConversationsViewController: BaseViewController {
                     self.tableView.reloadData()
                 case .failure(let error):
                     self.hideActivityIndicator()
-                    self.showAlert(
+                    self.showAlert( // must fix
                         title: "Uppps",
                         message: error.localizedDescription,
                         button: "Ok"

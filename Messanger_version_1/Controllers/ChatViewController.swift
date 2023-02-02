@@ -17,6 +17,7 @@ class ChatViewController: MessagesViewController {
     private var messages: [Message] = []
     private var sender: Sender!
     private var isNewConverstaion = true
+    private var choosenImage: UIImage? = nil
 
     public var companionAvatar: UIImage? = nil
     public var selfAvatarData: Data? = LocaleStorageManager.shared.profileImage
@@ -50,10 +51,44 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messageInputBar.delegate = self
+        setupInputButton()
 
         DispatchQueue.main.async {
             self.messagesCollectionView.reloadData()
         }
+    }
+
+    private func setupInputButton() {
+        let button = InputBarButtonItem()
+        button.setSize(.init(width: 35, height: 35), animated: true)
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+
+        button.onTouchUpInside { _ in
+            self.presentInputActionSheet()
+        }
+
+        messageInputBar.setLeftStackViewWidthConstant(to: 36, animated: true)
+        messageInputBar.setStackViewItems([ button ], forStack: .left, animated: true)
+    }
+
+    private func presentInputActionSheet() {
+        let actionSheet = UIAlertController(
+            title: "Attach Media",
+            message: "What would you like to attach?",
+            preferredStyle: .actionSheet
+        )
+
+        actionSheet.addAction(UIAlertAction(title: "Photo", style: .default, handler: { _ in
+            self.presentPhotoActionSheet()
+        }))
+
+        // TODO: Must Implement
+        // actionSheet.addAction(UIAlertAction(title: "Video", style: .default)
+        // actionSheet.addAction(UIAlertAction(title: "Audio", style: .default)
+
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        present(actionSheet, animated: true)
     }
 
     private func createSender() -> Sender? {
@@ -153,5 +188,93 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
 
     var currentSender: MessageKit.SenderType {
         return sender
+    }
+}
+
+extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func presentPhotoActionSheet() {
+        let actionSheet = UIAlertController(
+            title: LocalizeStrings.profilePicture,
+            message: LocalizeStrings.profilePictureMessage,
+            preferredStyle: .actionSheet
+        )
+
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
+            self.presentCamera()
+        }))
+
+        actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { _ in
+            self.presentPhotoPicker()
+        }))
+
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        present(actionSheet, animated: true)
+    }
+
+    func presentCamera() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.sourceType = .camera
+        imagePickerController.delegate = self
+        imagePickerController.allowsEditing = true
+
+        present(imagePickerController, animated: true)
+    }
+
+    func presentPhotoPicker() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.delegate = self
+        imagePickerController.allowsEditing = true
+
+        present(imagePickerController, animated: true)
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true)
+
+        guard
+            let selectedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage,
+            let data = selectedImage.pngData(),
+            let conversationId
+        else { return }
+
+        let fileName = "photo_message_" + generateNewId()
+
+        StorageManager.shared.sendImageInMessage(
+            with: data,
+            fileName: fileName) { result in
+                switch result {
+                    case .success(let url):
+                        guard
+                            let url = URL(string: url),
+                            let placeholderImage = UIImage(systemName: "paperplane")
+                        else { return }
+
+                        let media = Media(url: url, placeholderImage: placeholderImage, size: .zero)
+                        let message = Message(
+                            sender: self.sender,
+                            messageId: self.generateNewId(),
+                            sentDate: Date(),
+                            kind: .photo(media)
+                        )
+
+                        DatabaseManager.shared.sendMessage(to: conversationId, otherUserEmail: self.otherUserEmail, message: message) { success in
+                            if success {
+                                debugPrint("Image sent!")
+                            } else {
+                                debugPrint("Image sending error!")
+                            }
+
+                        }
+                    case .failure(let error):
+                        debugPrint("Error: ", error.localizedDescription)
+                }
+            }
+
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
     }
 }

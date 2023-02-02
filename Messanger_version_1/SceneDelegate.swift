@@ -23,11 +23,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window?.rootViewController = mainScreen
 
             guard let isEnglishLanguage = LocaleStorageManager.shared.isEnglishLanguage else {
-                Loci.update(language: .en)
+                Localize.update(language: .en)
                 return
             }
             
-            isEnglishLanguage ? Loci.update(language: .en) : Loci.update(language: .rus)
+            isEnglishLanguage ? Localize.update(language: .en) : Localize.update(language: .rus)
         } else {
             let authNavigationController = UIStoryboard.main.instantiateViewController(withIdentifier: "AuthNavigationController") as! AuthNavigationController
             

@@ -33,7 +33,7 @@ class ProfileViewController: BaseViewController {
     }
 
     private func setup() {
-        changeLanguageControl.selectedSegmentIndex = Loci.lang == .en ? 0 : 1
+        changeLanguageControl.selectedSegmentIndex = Localize.language == .en ? 0 : 1
         saveButton.isEnabled = false
         let image: UIImage?
 
@@ -67,11 +67,11 @@ class ProfileViewController: BaseViewController {
     }
 
     func updateLocalization() {
-        title = Localize.account
-        saveButton.title = Localize.save
-        usernameLabel.text = Localize.username
-        languageLabel.text = Localize.language
-        logoutButton.setTitle(Localize.logout, for: .normal)
+        title = LocalizeStrings.account
+        saveButton.title = LocalizeStrings.save
+        usernameLabel.text = LocalizeStrings.username
+        languageLabel.text = LocalizeStrings.language
+        logoutButton.setTitle(LocalizeStrings.logout, for: .normal)
 //        updateUsernameButton.setTitle(Localize.logout, for: .normal)
     }
 
@@ -142,10 +142,10 @@ class ProfileViewController: BaseViewController {
     @IBAction private func changeLanguageAction(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
             case 0:
-                Loci.update(language: .en)
+                Localize.update(language: .en)
                 LocaleStorageManager.shared.isEnglishLanguage = true
             case 1:
-                Loci.update(language: .rus)
+                Localize.update(language: .rus)
                 LocaleStorageManager.shared.isEnglishLanguage = false
             default: break
         }
@@ -198,20 +198,20 @@ class ProfileViewController: BaseViewController {
 extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func presentPhotoActionSheet() {
         let actionSheet = UIAlertController(
-            title: "Profile Picture",
-            message: "How would you like to select picture?",
+            title: LocalizeStrings.profilePicture,
+            message: LocalizeStrings.profilePictureMessage,
             preferredStyle: .actionSheet
         )
 
-        actionSheet.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { _ in
+        actionSheet.addAction(UIAlertAction(title: LocalizeStrings.takePhoto, style: .default, handler: { _ in
             self.presentCamera()
         }))
 
-        actionSheet.addAction(UIAlertAction(title: "Choose Photo", style: .default, handler: { _ in
+        actionSheet.addAction(UIAlertAction(title: LocalizeStrings.choosePhoto, style: .default, handler: { _ in
             self.presentPhotoPicker()
         }))
 
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        actionSheet.addAction(UIAlertAction(title: LocalizeStrings.cancel, style: .cancel))
 
         present(actionSheet, animated: true)
     }

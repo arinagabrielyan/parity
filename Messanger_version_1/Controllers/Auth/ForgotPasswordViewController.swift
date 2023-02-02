@@ -21,9 +21,9 @@ class ForgotPasswordViewController: BaseViewController {
                     self.hideActivityIndicator()
 
                     self.showAlert(
-                        title: "Success",
-                        message: "Link for recover password sent to \(emailToSend)",
-                        button: "Ok") { _ in
+                        title: "Success",  // need to localize
+                        message: "Link for recover password sent to \(emailToSend)",  // need to localize
+                        button: "Ok") { _ in  // need to localize
                             self.popToAuthNavigationController()
                         }
                 case .failure(let error):
