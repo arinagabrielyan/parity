@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CreateNewNoteViewController: UIViewController {
+class CreateNewNoteViewController: UIViewController, Localizable {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var notesTextView: UITextView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -21,6 +21,17 @@ class CreateNewNoteViewController: UIViewController {
         super.viewDidLoad()
 
         setup()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        updateLocalization()
+    }
+
+    func updateLocalization() {
+        title = LocalizeStrings.newNote
+        saveButton.title = LocalizeStrings.save
     }
 
     private func setup() {

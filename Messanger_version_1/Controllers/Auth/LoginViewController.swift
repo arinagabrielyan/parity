@@ -10,11 +10,15 @@ import UIKit
 class LoginViewController: BaseViewController {
     @IBOutlet weak private var emailTextField: UITextField!
     @IBOutlet weak private var passwordTextField: UITextField!
+    @IBOutlet weak private var languageLabel: UILabel!
+    @IBOutlet weak private var createNewAccount: UIButton!
+    @IBOutlet weak private var forgotPasswordButton: UIButton!
+    @IBOutlet weak private var loginButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setup()
+        updateLocalization()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -22,9 +26,14 @@ class LoginViewController: BaseViewController {
 
         hideActivityIndicator()
     }
-    
-    private func setup() {
-        title = String.Constants.logIn
+
+    private func updateLocalization() {
+        title = "Log in" // need to localize
+        passwordTextField.placeholder = "Password" // need to localize
+        languageLabel.text = "Language" // need to localize
+        forgotPasswordButton.setTitle("forgotPassword", for: .normal) // need to localize
+        loginButton.setTitle("login", for: .normal) // need to localize
+        createNewAccount.setTitle("createNewAccount", for: .normal) // need to localize
     }
 
     @IBAction private func loginButtonTapped(_ sender: UIButton) {
@@ -53,9 +62,9 @@ class LoginViewController: BaseViewController {
                         self.hideActivityIndicator()
 
                         self.showAlert(
-                            title: "Authentication error",
+                            title: "Authentication error",  // need to localize
                             message: error.localizedDescription,
-                            button: "Ok"
+                            button: "Ok"  // need to localize
                         )
                 }
             }
@@ -63,9 +72,9 @@ class LoginViewController: BaseViewController {
             self.hideActivityIndicator()
 
             self.showAlert(
-                title: "Login failed",
-                message: "Wrong email or password",
-                button: "Ok"
+                title: "Login failed", // need to localize
+                message: "Wrong email or password", // need to localize
+                button: "Ok"  // need to localize
             )
         }
     }
@@ -78,18 +87,26 @@ class LoginViewController: BaseViewController {
         navigateToForgotPasswordViewController()
     }
 
+    @IBAction private func changeLanguageAction(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+            case 0:
+                Localize.update(language: .en)
+                LocaleStorageManager.shared.isEnglishLanguage = true
+            case 1:
+                Localize.update(language: .rus)
+                LocaleStorageManager.shared.isEnglishLanguage = false
+            default: break
+        }
+
+        updateLocalization()
+    }
+
     //MARK: - Navigation -
 
     private func navigateToMainScreen() {
         let mainScreen = UIStoryboard.main.instantiateViewController(withIdentifier: "MainScreen") as! MainScreen
 
         self.navigationController?.pushViewController(mainScreen, animated: true)
-    }
-
-    private func navigateToChatListViewController() {
-        let chatListViewController = UIStoryboard.main.instantiateViewController(withIdentifier: "ChatListViewController") as! ChatListViewController
-
-        navigationController?.pushViewController(chatListViewController, animated: true)
     }
 
     private func navigateToRegisterViewController() {

@@ -44,6 +44,26 @@ final class StorageManager {
         }
     }
 
+    public func sendImageInMessage(
+        with data: Data,
+        fileName: String,
+        compeletion: @escaping ((Result<String, Error>) -> Void)
+    ) {
+        storage.child("message_images/\(fileName)").putData(data) { _, error in
+            if error != nil {
+                compeletion(.failure(StorageError.failedToUploadImage))
+            }
+
+            self.storage.child("message_images/\(fileName)").downloadURL { url, error in
+                if let url {
+                    compeletion(.success(url.absoluteString))
+                } else {
+                    compeletion(.failure(StorageError.failedToDownloadUrl))
+                }
+            }
+        }
+    }
+
     public func downloadURL(with path: String, completion: @escaping (Result<URL, Error>) -> Void) {
         let reference = storage.child("images/\(path)")
 

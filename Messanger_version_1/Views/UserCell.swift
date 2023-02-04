@@ -1,5 +1,5 @@
 //
-//  ContactCell.swift
+//  UserCell.swift
 //  Messanger_version_1
 //
 //  Created by Khachatur Sargsyan on 21.01.23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ContactCell: UITableViewCell {
+class UserCell: UITableViewCell {
     @IBOutlet private weak var contactIcon: UILabel!
     @IBOutlet private weak var usernameLabel: UILabel!
     @IBOutlet private weak var emailLabel: UILabel!

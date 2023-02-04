@@ -36,11 +36,11 @@ class NewConversationViewController: UIViewController {
         view.addSubview(tableView)
 
         searchBar.delegate = self
-        searchBar.placeholder = "Search user..."
+        searchBar.placeholder = "Search user..." // need to localize
         searchBar.becomeFirstResponder()
 
         navigationController?.navigationBar.topItem?.titleView = searchBar
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel",
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", // need to localize
                                                             style: .done,
                                                             target: self,
                                                             action: #selector(dismissAction))

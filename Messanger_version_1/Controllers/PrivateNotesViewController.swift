@@ -8,7 +8,8 @@
 import UIKit
 import LocalAuthentication
 
-class PrivateNotesViewController: BaseViewController {
+class PrivateNotesViewController: BaseViewController, Localizable {
+    @IBOutlet weak var unlockButton: UIButton!
     @IBOutlet weak var coverView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addButton: UIBarButtonItem!
@@ -29,6 +30,8 @@ class PrivateNotesViewController: BaseViewController {
             faceIdCheck()
             fetchNotes()
         }
+
+        unlockButton.setTitle(LocalizeStrings.unlock, for: .normal)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -43,14 +46,16 @@ class PrivateNotesViewController: BaseViewController {
         }
     }
 
+    func updateLocalization() {
+        title = LocalizeStrings.privateNote
+    }
+
     private func setup() {
         tableView.delegate = self
         tableView.dataSource = self
 
         addButton.isHidden = true
         coverView.isHidden = false
-
-        title = "Private notes"
     }
 
     private func fetchNotes() {
@@ -66,7 +71,7 @@ class PrivateNotesViewController: BaseViewController {
         var error: NSError?
 
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            let reason = "Check Face ID for access to Private Notes"
+            let reason = LocalizeStrings.chechFaceID
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, error in
                 if success {
                     DispatchQueue.main.async {
@@ -76,9 +81,9 @@ class PrivateNotesViewController: BaseViewController {
                 } else {
                     DispatchQueue.main.async {
                         self.showAlert(
-                            title: "Failed to Authenticate",
-                            message: "Please try again.",
-                            button: "Dissmis"
+                            title: "Failed to Authenticate", // need to localize
+                            message: "Please try again.", // need to localize
+                            button: "Dissmis" // need to localize
                         )
                     }
                 }
@@ -86,9 +91,9 @@ class PrivateNotesViewController: BaseViewController {
         } else {
             DispatchQueue.main.async {
                 self.showAlert(
-                    title: "Unavailable",
-                    message: "You can't use this feature.",
-                    button: "Dissmis"
+                    title: "Unavailable", // need to localize
+                    message: "You can't use this feature.", // need to localize
+                    button: "Dissmis" // need to localize
                 )
             }
         }
@@ -111,9 +116,11 @@ class PrivateNotesViewController: BaseViewController {
 
         needToSaveNotes = false
         createNewNoteViewController.isNewNode = true
-        createNewNoteViewController.title = "New Note"
+        createNewNoteViewController.title = "New Note" // need to localize
         navigationController?.pushViewController(createNewNoteViewController, animated: true)
     }
+
+    //MARK: - IBAction methods -
 
     @IBAction func addNoteButtonTapped(_ sender: UIBarButtonItem) {
         navigateToNewNoteViewController()
@@ -156,7 +163,7 @@ extension PrivateNotesViewController: UITableViewDelegate, UITableViewDataSource
         needToSaveNotes = false
         let date = self.dateFormatter.string(from: Date())
         createNewNoteViewController.note = .init(title: note.title, note: note.note, date: date)
-        createNewNoteViewController.title = "Edit Note"
+        createNewNoteViewController.title = "Edit Note" // need to localize
 
         navigationController?.pushViewController(createNewNoteViewController, animated: true)
     }

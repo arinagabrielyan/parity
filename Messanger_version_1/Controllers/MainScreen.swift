@@ -7,11 +7,18 @@
 
 import UIKit
 
-class MainScreen: UITabBarController {
+// Need for Localization
+public var controllers: [UIViewController] = []
 
+class MainScreen: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.navigationItem.setHidesBackButton(true, animated: true)
+
+        guard let viewControllers = self.viewControllers else { return }
+
+        controllers = viewControllers.compactMap { ($0 as? UINavigationController)?.viewControllers.first }
+        controllers.forEach { ($0 as? Localizable)?.updateLocalization() }
     }
 }

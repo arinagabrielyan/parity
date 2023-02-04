@@ -19,7 +19,9 @@ class RegisterViewController: BaseViewController {
     }
 
     private func setup() {
-        title = String.Constants.register
+        usernameTextField.placeholder = "Username" // need to localize
+        passwordTextField.placeholder = "Password" // need to localize
+        title = "Register"  // need to localize
     }
 
     @IBAction private func registerButtonTapped(_ sender: UIButton) {
@@ -44,9 +46,9 @@ class RegisterViewController: BaseViewController {
                         self.hideActivityIndicator()
 
                         self.showAlert(
-                            title: "User register error",
+                            title: "User register error",  // need to localize
                             message: error.localizedDescription,
-                            button: "Ok"
+                            button: "Ok"  // need to localize
                         )
                 }
             }
@@ -54,9 +56,9 @@ class RegisterViewController: BaseViewController {
             self.hideActivityIndicator()
 
             self.showAlert(
-                title: "Wrong email or password!",
+                title: "Wrong email or password!",  // need to localize
                 message: nil,
-                button: "Ok"
+                button: "Ok"  // need to localize
             )
         }
     }
