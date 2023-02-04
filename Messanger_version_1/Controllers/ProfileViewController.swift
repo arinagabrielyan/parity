@@ -7,7 +7,8 @@
 
 import UIKit
 
-class ProfileViewController: BaseViewController {
+class ProfileViewController: UIViewController, Localizable {
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var updateUsernameButton: UIButton!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -23,6 +24,18 @@ class ProfileViewController: BaseViewController {
         super.viewDidLoad()
 
         setup()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        activityIndicator.isHidden = true
+
+        saveButton.title = LocalizeStrings.save
+        usernameLabel.text = LocalizeStrings.username
+        languageLabel.text = LocalizeStrings.language
+        logoutButton.setTitle(LocalizeStrings.logout, for: .normal)
+        updateUsernameButton.setTitle(LocalizeStrings.update, for: .normal)
     }
 
     override func viewDidLayoutSubviews() {
@@ -55,24 +68,13 @@ class ProfileViewController: BaseViewController {
         updateUsernameButton.alpha = 0
     }
 
+    func updateLocalization() {
+        title = LocalizeStrings.profile
+    }
+
     @objc
     private func avatarTapped() {
         presentPhotoActionSheet()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        updateLocalization()
-    }
-
-    func updateLocalization() {
-        title = LocalizeStrings.account
-        saveButton.title = LocalizeStrings.save
-        usernameLabel.text = LocalizeStrings.username
-        languageLabel.text = LocalizeStrings.language
-        logoutButton.setTitle(LocalizeStrings.logout, for: .normal)
-//        updateUsernameButton.setTitle(Localize.logout, for: .normal)
     }
 
     private func saveProfileImage() {
@@ -105,6 +107,16 @@ class ProfileViewController: BaseViewController {
                 }
             }
         }
+    }
+
+    private func showActivityIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+
+    private func hideActivityIndicator() {
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
     }
 
     // MARK: - IBAction methods -
@@ -151,6 +163,13 @@ class ProfileViewController: BaseViewController {
         }
 
         updateLocalization()
+        saveButton.title = LocalizeStrings.save
+        usernameLabel.text = LocalizeStrings.username
+        languageLabel.text = LocalizeStrings.language
+        logoutButton.setTitle(LocalizeStrings.logout, for: .normal)
+        updateUsernameButton.setTitle(LocalizeStrings.update, for: .normal)
+
+        controllers.forEach { ($0 as? Localizable)?.updateLocalization() }
     }
 
     @IBAction private func logoutButtonTapped(_ sender: UIButton) {

@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
         guard let _ = (scene as? UIWindowScene) else { return }
-
+        
         if FirebaseManager.isUserExist {
             ImageDownloader.downloadProfileImage()
 
@@ -30,6 +30,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             isEnglishLanguage ? Localize.update(language: .en) : Localize.update(language: .rus)
         } else {
             let authNavigationController = UIStoryboard.main.instantiateViewController(withIdentifier: "AuthNavigationController") as! AuthNavigationController
+
+            Localize.update(language: .en)
             
             self.window?.rootViewController = authNavigationController
         }

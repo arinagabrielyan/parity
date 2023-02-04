@@ -5,6 +5,10 @@
 //  Created by Khachatur Sargsyan on 02.02.23.
 //
 
+protocol Localizable {
+    func updateLocalization()
+}
+
 class Localize {
     enum Language {
         case en
@@ -34,11 +38,12 @@ class LocalizeStrings {
     class var takePhoto: String { Localize.language == .en ? "Take Photo" : "Фотографировать" }
     class var choosePhoto: String { Localize.language == .en ? "Choose Photo" : "Выбрать фото" }
     class var cancel: String { Localize.language == .en ? "Cancel" : "Отмена" }
+    class var newNote: String { Localize.language == .en ? "New Note" : "Новая заметка" }
     class var unlock: String { Localize.language == .en ? "Unlock" : "Разблокировать" }
+    class var profile: String { Localize.language == .en ? "Profile" : "Профиль" }
+    class var update: String { Localize.language == .en ? "Update" : "Обновить" }
     class var profilePicture: String { Localize.language == .en ? "Profile Picture" : "Изображение профиля" }
     class var profilePictureMessage: String { Localize.language == .en ? "How would you like to select picture?" : "Как бы вы хотели выбрать картинку?" }
     class var chechFaceID: String { Localize.language == .en ? "Check Face ID for access to Private Notes?" : "Проверьте Face ID для доступа к личным заметкам" }
-
-
     // must add
 }

@@ -19,10 +19,7 @@
 		6B1152A42969F61600CCF696 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B1152A22969F61600CCF696 /* LaunchScreen.storyboard */; };
 		6B1152B02969FFC300CCF696 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152AF2969FFC300CCF696 /* LoginViewController.swift */; };
 		6B1152B22969FFD200CCF696 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152B12969FFD200CCF696 /* RegisterViewController.swift */; };
-		6B1152B5296A000600CCF696 /* NewMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152B4296A000600CCF696 /* NewMessageViewController.swift */; };
 		6B1152B7296A004D00CCF696 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152B6296A004D00CCF696 /* ProfileViewController.swift */; };
-		6B1152B9296A009800CCF696 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152B8296A009800CCF696 /* PhotoViewController.swift */; };
-		6B1152BB296A00AC00CCF696 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152BA296A00AC00CCF696 /* VideoViewController.swift */; };
 		6B1152BE296A259500CCF696 /* String+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152BD296A259500CCF696 /* String+Constants.swift */; };
 		6B1152C1296A336400CCF696 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6B1152C0296A336400CCF696 /* FirebaseAuth */; };
 		6B1152C3296A336400CCF696 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 6B1152C2296A336400CCF696 /* FirebaseDatabase */; };
@@ -33,8 +30,6 @@
 		6B1152D2296B6C2000CCF696 /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6B1152D1296B6C2000CCF696 /* MessageKit */; };
 		6B1152D5296B6C4200CCF696 /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 6B1152D4296B6C4200CCF696 /* JGProgressHUD */; };
 		6B1152D8296B6D9E00CCF696 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6B1152D7296B6D9E00CCF696 /* RealmSwift */; };
-		6B1152DA296B6DDB00CCF696 /* ChatListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152D9296B6DDB00CCF696 /* ChatListViewController.swift */; };
-		6B1152DE296B783E00CCF696 /* ChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152DD296B783E00CCF696 /* ChatListCell.swift */; };
 		6B1152E0296F7BFD00CCF696 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152DF296F7BFD00CCF696 /* NewConversationViewController.swift */; };
 		6B1152E2296F7FD200CCF696 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152E1296F7FD200CCF696 /* StorageManager.swift */; };
 		6B1152E62971AC1700CCF696 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152E52971AC1700CCF696 /* Message.swift */; };
@@ -43,17 +38,18 @@
 		6B1152ED297229D300CCF696 /* String+Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152EC297229D300CCF696 /* String+Validator.swift */; };
 		6B1152F129723A2E00CCF696 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152F029723A2E00CCF696 /* MainScreen.swift */; };
 		6B5DEC0F297C27C4006A171D /* AuthNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5DEC0E297C27C4006A171D /* AuthNavigationController.swift */; };
-		6B5DEC11297C4254006A171D /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5DEC10297C4254006A171D /* ContactCell.swift */; };
+		6B5DEC11297C4254006A171D /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5DEC10297C4254006A171D /* UserCell.swift */; };
+		6B7FAD30298EFBB000260E27 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7FAD2F298EFBB000260E27 /* PhotoViewerViewController.swift */; };
 		6BA6C98A298B09E8001FCB45 /* Localize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA6C989298B09E8001FCB45 /* Localize.swift */; };
 		6BB9427529736B6F00448D33 /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB9427429736B6F00448D33 /* ConversationsViewController.swift */; };
 		6BD53A6B297F01120031E0C6 /* PrivateNotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD53A6A297F01120031E0C6 /* PrivateNotesViewController.swift */; };
 		6BD53A6D297F25090031E0C6 /* PrivateNotesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD53A6C297F25090031E0C6 /* PrivateNotesCell.swift */; };
 		6BD53A6F297F25870031E0C6 /* CreateNewNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD53A6E297F25870031E0C6 /* CreateNewNoteViewController.swift */; };
 		6BD53A71297F33670031E0C6 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD53A70297F33670031E0C6 /* Note.swift */; };
-		6BF4271A29737E9F00444AD0 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF4271929737E9F00444AD0 /* ContactsViewController.swift */; };
+		6BF4271A29737E9F00444AD0 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF4271929737E9F00444AD0 /* UserViewController.swift */; };
 		6BF4271D29761E4C00444AD0 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF4271C29761E4C00444AD0 /* Conversation.swift */; };
 		6BF4271F29761E6F00444AD0 /* LatestMessaage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF4271E29761E6F00444AD0 /* LatestMessaage.swift */; };
-		6BF427212976462D00444AD0 /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF427202976462D00444AD0 /* ConversationTableViewCell.swift */; };
+		6BF427212976462D00444AD0 /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF427202976462D00444AD0 /* ConversationCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,16 +65,11 @@
 		6B1152A52969F61600CCF696 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B1152AF2969FFC300CCF696 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6B1152B12969FFD200CCF696 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
-		6B1152B4296A000600CCF696 /* NewMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageViewController.swift; sourceTree = "<group>"; };
 		6B1152B6296A004D00CCF696 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		6B1152B8296A009800CCF696 /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
-		6B1152BA296A00AC00CCF696 /* VideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
 		6B1152BD296A259500CCF696 /* String+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Constants.swift"; sourceTree = "<group>"; };
 		6B1152C9296A364E00CCF696 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		6B1152CC296A40C200CCF696 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		6B1152CE296A448C00CCF696 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		6B1152D9296B6DDB00CCF696 /* ChatListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewController.swift; sourceTree = "<group>"; };
-		6B1152DD296B783E00CCF696 /* ChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListCell.swift; sourceTree = "<group>"; };
 		6B1152DF296F7BFD00CCF696 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		6B1152E1296F7FD200CCF696 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		6B1152E52971AC1700CCF696 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -87,7 +78,8 @@
 		6B1152EC297229D300CCF696 /* String+Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Validator.swift"; sourceTree = "<group>"; };
 		6B1152F029723A2E00CCF696 /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		6B5DEC0E297C27C4006A171D /* AuthNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNavigationController.swift; sourceTree = "<group>"; };
-		6B5DEC10297C4254006A171D /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		6B5DEC10297C4254006A171D /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		6B7FAD2F298EFBB000260E27 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
 		6BA6C97F298AF673001FCB45 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6BA6C980298AF673001FCB45 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6BA6C989298B09E8001FCB45 /* Localize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localize.swift; sourceTree = "<group>"; };
@@ -96,10 +88,10 @@
 		6BD53A6C297F25090031E0C6 /* PrivateNotesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateNotesCell.swift; sourceTree = "<group>"; };
 		6BD53A6E297F25870031E0C6 /* CreateNewNoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewNoteViewController.swift; sourceTree = "<group>"; };
 		6BD53A70297F33670031E0C6 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
-		6BF4271929737E9F00444AD0 /* ContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
+		6BF4271929737E9F00444AD0 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		6BF4271C29761E4C00444AD0 /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		6BF4271E29761E6F00444AD0 /* LatestMessaage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestMessaage.swift; sourceTree = "<group>"; };
-		6BF427202976462D00444AD0 /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
+		6BF427202976462D00444AD0 /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,18 +172,15 @@
 			children = (
 				6B1152B32969FFD700CCF696 /* Auth */,
 				6B11529B2969F61500CCF696 /* ChatViewController.swift */,
-				6B1152B4296A000600CCF696 /* NewMessageViewController.swift */,
 				6B1152B6296A004D00CCF696 /* ProfileViewController.swift */,
-				6B1152B8296A009800CCF696 /* PhotoViewController.swift */,
-				6B1152BA296A00AC00CCF696 /* VideoViewController.swift */,
-				6B1152D9296B6DDB00CCF696 /* ChatListViewController.swift */,
 				6B1152DF296F7BFD00CCF696 /* NewConversationViewController.swift */,
 				6B1152F029723A2E00CCF696 /* MainScreen.swift */,
 				6BB9427429736B6F00448D33 /* ConversationsViewController.swift */,
-				6BF4271929737E9F00444AD0 /* ContactsViewController.swift */,
+				6BF4271929737E9F00444AD0 /* UserViewController.swift */,
 				6B5DEC0E297C27C4006A171D /* AuthNavigationController.swift */,
 				6BD53A6A297F01120031E0C6 /* PrivateNotesViewController.swift */,
 				6BD53A6E297F25870031E0C6 /* CreateNewNoteViewController.swift */,
+				6B7FAD2F298EFBB000260E27 /* PhotoViewerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -201,9 +190,8 @@
 			children = (
 				6B11529D2969F61500CCF696 /* Main.storyboard */,
 				6B1152A22969F61600CCF696 /* LaunchScreen.storyboard */,
-				6BF427202976462D00444AD0 /* ConversationTableViewCell.swift */,
-				6B1152DD296B783E00CCF696 /* ChatListCell.swift */,
-				6B5DEC10297C4254006A171D /* ContactCell.swift */,
+				6BF427202976462D00444AD0 /* ConversationCell.swift */,
+				6B5DEC10297C4254006A171D /* UserCell.swift */,
 				6BD53A6C297F25090031E0C6 /* PrivateNotesCell.swift */,
 				6B11190429834728005D59E1 /* BaseViewController.swift */,
 			);
@@ -341,10 +329,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B5DEC11297C4254006A171D /* ContactCell.swift in Sources */,
+				6B7FAD30298EFBB000260E27 /* PhotoViewerViewController.swift in Sources */,
+				6B5DEC11297C4254006A171D /* UserCell.swift in Sources */,
 				6B1152ED297229D300CCF696 /* String+Validator.swift in Sources */,
 				6B1152E2296F7FD200CCF696 /* StorageManager.swift in Sources */,
-				6B1152DE296B783E00CCF696 /* ChatListCell.swift in Sources */,
 				6BB9427529736B6F00448D33 /* ConversationsViewController.swift in Sources */,
 				6B1152CF296A448C00CCF696 /* User.swift in Sources */,
 				6B1152E82971AC6300CCF696 /* Sender.swift in Sources */,
@@ -356,11 +344,8 @@
 				6BD53A6B297F01120031E0C6 /* PrivateNotesViewController.swift in Sources */,
 				6BF4271F29761E6F00444AD0 /* LatestMessaage.swift in Sources */,
 				6B1152B7296A004D00CCF696 /* ProfileViewController.swift in Sources */,
-				6B1152BB296A00AC00CCF696 /* VideoViewController.swift in Sources */,
 				6B1152B02969FFC300CCF696 /* LoginViewController.swift in Sources */,
 				6BF4271D29761E4C00444AD0 /* Conversation.swift in Sources */,
-				6B1152DA296B6DDB00CCF696 /* ChatListViewController.swift in Sources */,
-				6B1152B5296A000600CCF696 /* NewMessageViewController.swift in Sources */,
 				6B1152CA296A364E00CCF696 /* FirebaseManager.swift in Sources */,
 				6B1152BE296A259500CCF696 /* String+Constants.swift in Sources */,
 				6BD53A71297F33670031E0C6 /* Note.swift in Sources */,
@@ -374,10 +359,9 @@
 				6B1152EA2972270100CCF696 /* ForgotPasswordViewController.swift in Sources */,
 				6B1118E329805918005D59E1 /* ImageDownloader.swift in Sources */,
 				6B1152982969F61500CCF696 /* AppDelegate.swift in Sources */,
-				6BF427212976462D00444AD0 /* ConversationTableViewCell.swift in Sources */,
-				6B1152B9296A009800CCF696 /* PhotoViewController.swift in Sources */,
+				6BF427212976462D00444AD0 /* ConversationCell.swift in Sources */,
 				6B11529A2969F61500CCF696 /* SceneDelegate.swift in Sources */,
-				6BF4271A29737E9F00444AD0 /* ContactsViewController.swift in Sources */,
+				6BF4271A29737E9F00444AD0 /* UserViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

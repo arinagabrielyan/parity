@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ContactsViewController: BaseViewController {
+class UserViewController: BaseViewController, Localizable {
     @IBOutlet weak var tableView: UITableView!
     private var users: [User] = []
 
@@ -18,7 +18,7 @@ class ContactsViewController: BaseViewController {
         fetchUsers()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    func updateLocalization() {
         title = LocalizeStrings.useres
     }
 
@@ -42,11 +42,11 @@ class ContactsViewController: BaseViewController {
 
 //MARK: - TableViewDataSource, Delegate -
 
-extension ContactsViewController: UITableViewDataSource, UITableViewDelegate {
+extension UserViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { users.count }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ContactCell", for: indexPath) as! ContactCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
 
         let conversation = users[indexPath.row]
 
@@ -68,4 +68,3 @@ extension ContactsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 50 }
 }
-

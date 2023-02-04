@@ -7,12 +7,10 @@
 
 import UIKit
 
+// Need for Localization
 public var controllers: [UIViewController] = []
 
-public var taps: [UIViewController] = []
-
 class MainScreen: UITabBarController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,11 +18,7 @@ class MainScreen: UITabBarController {
 
         guard let viewControllers = self.viewControllers else { return }
 
-        controllers = viewControllers
-    }
-
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-
+        controllers = viewControllers.compactMap { ($0 as? UINavigationController)?.viewControllers.first }
+        controllers.forEach { ($0 as? Localizable)?.updateLocalization() }
     }
 }

@@ -19,7 +19,9 @@ class RegisterViewController: BaseViewController {
     }
 
     private func setup() {
-        title = String.Constants.register  // need to localize
+        usernameTextField.placeholder = "Username" // need to localize
+        passwordTextField.placeholder = "Password" // need to localize
+        title = "Register"  // need to localize
     }
 
     @IBAction private func registerButtonTapped(_ sender: UIButton) {

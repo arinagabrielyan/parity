@@ -9,7 +9,7 @@ import UIKit
 import MessageKit
 import InputBarAccessoryView
 
-class ChatViewController: MessagesViewController {
+class ChatViewController: MessagesViewController, Localizable {
     private var mainView = UIView()
     private var otherUserEmail: String
     private var otherUsername: String
@@ -50,12 +50,17 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
+        messagesCollectionView.messageCellDelegate = self
         messageInputBar.delegate = self
         setupInputButton()
 
         DispatchQueue.main.async {
             self.messagesCollectionView.reloadData()
         }
+    }
+
+    func updateLocalization() {
+        title = LocalizeStrings.chat
     }
 
     private func setupInputButton() {
@@ -73,20 +78,16 @@ class ChatViewController: MessagesViewController {
 
     private func presentInputActionSheet() {
         let actionSheet = UIAlertController(
-            title: "Attach Media",
-            message: "What would you like to attach?",
+            title: "Attach Media", // need to localize
+            message: "What would you like to attach?", // need to localize
             preferredStyle: .actionSheet
         )
 
-        actionSheet.addAction(UIAlertAction(title: "Photo", style: .default, handler: { _ in
+        actionSheet.addAction(UIAlertAction(title: "Photo", style: .default, handler: { _ in // need to localize
             self.presentPhotoActionSheet()
         }))
 
-        // TODO: Must Implement
-        // actionSheet.addAction(UIAlertAction(title: "Video", style: .default)
-        // actionSheet.addAction(UIAlertAction(title: "Audio", style: .default)
-
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel)) // need to localize
 
         present(actionSheet, animated: true)
     }
@@ -189,6 +190,42 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
     var currentSender: MessageKit.SenderType {
         return sender
     }
+
+    func configureMediaMessageImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+
+        guard let message = message as? Message else { return }
+
+        switch message.kind {
+            case .photo(let photo):
+                guard let imageUrl = photo.url else { return }
+
+                ImageDownloader.load(url: imageUrl, completion: { image in
+                    imageView.image = image
+                })
+            default: break
+        }
+    }
+}
+
+extension ChatViewController: MessageCellDelegate {
+    func didTapImage(in cell: MessageCollectionViewCell) {
+        guard let indexPath = messagesCollectionView.indexPath(for: cell) else { return }
+
+        let message = messages[indexPath.section]
+
+        switch message.kind {
+            case .photo(let photo):
+                guard let imageUrl = photo.url else { return }
+
+                let photoViewerViewController = UIStoryboard.main.instantiateViewController(withIdentifier: "PhotoViewerViewController") as! PhotoViewerViewController
+
+                photoViewerViewController.set(url: imageUrl)
+
+                navigationController?.pushViewController(photoViewerViewController, animated: true)
+
+            default: break
+        }
+    }
 }
 
 extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -199,14 +236,15 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
             preferredStyle: .actionSheet
         )
 
+        // need to localize
         actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
             self.presentCamera()
         }))
-
+        // need to localize
         actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { _ in
             self.presentPhotoPicker()
         }))
-
+        // need to localize
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
 
         present(actionSheet, animated: true)
@@ -239,7 +277,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
             let conversationId
         else { return }
 
-        let fileName = "photo_message_" + generateNewId()
+        let fileName = "photo_message_" + generateNewId() + ".png"
 
         StorageManager.shared.sendImageInMessage(
             with: data,

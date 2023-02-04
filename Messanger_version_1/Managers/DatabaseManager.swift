@@ -6,6 +6,8 @@
 //
 
 import FirebaseDatabase
+import MessageKit
+import UIKit
 
 final class DatabaseManager {
     static let shared = DatabaseManager()
@@ -441,7 +443,7 @@ final class DatabaseManager {
                     let messageId = dict["id"] as? String,
                     let content = dict["content"] as? String,
                     let senderEmail = dict["sender_email"] as? String,
-                    let _ = dict["type"] as? String,
+                    let type = dict["type"] as? String,
                     let _ = dict["date"] as? String
                 else {
                     return Message(
@@ -452,9 +454,24 @@ final class DatabaseManager {
                     )
                 }
 
+                var kind: MessageKind!
+
+                if type == "photo" {
+                    if let imageURL = URL(string: content),
+                       let placeholder = UIImage(systemName: "paperplane") {
+                        kind = .photo(Media(
+                            url: imageURL,
+                            placeholderImage: placeholder,
+                            size: CGSize(width: 200, height: 200)
+                        ))
+                    }
+                } else {
+                    kind = .text(content)
+                }
+
                 let sender = Sender(senderId: senderEmail, displayName: username)
 
-                return Message(sender: sender, messageId: messageId, sentDate: Date(), kind: .text(content))
+                return Message(sender: sender, messageId: messageId, sentDate: Date(), kind: kind)
             })
 
             compeletion(.success(messages))

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ConversationTableViewCell: UITableViewCell {
+class ConversationCell: UITableViewCell {
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var userAvatarLabel: UILabel!
     @IBOutlet weak var lastMessageLabel: UILabel!
