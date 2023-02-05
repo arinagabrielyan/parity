@@ -5,7 +5,6 @@
 //  Created by Khachatur Sargsyan on 24.01.23.
 //
 
-
 struct Note {
     let title: String
     let note: String

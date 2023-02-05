@@ -11,7 +11,7 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak private var emailTextField: UITextField!
     @IBOutlet weak private var passwordTextField: UITextField!
     @IBOutlet weak private var languageLabel: UILabel!
-    @IBOutlet weak private var createNewAccount: UIButton!
+    @IBOutlet weak private var register: UIButton!
     @IBOutlet weak private var forgotPasswordButton: UIButton!
     @IBOutlet weak private var loginButton: UIButton!
 
@@ -28,12 +28,12 @@ class LoginViewController: BaseViewController {
     }
 
     private func updateLocalization() {
-        title = "Log in" // need to localize
-        passwordTextField.placeholder = "Password" // need to localize
-        languageLabel.text = "Language" // need to localize
-        forgotPasswordButton.setTitle("forgotPassword", for: .normal) // need to localize
-        loginButton.setTitle("login", for: .normal) // need to localize
-        createNewAccount.setTitle("createNewAccount", for: .normal) // need to localize
+        title = LocalizeStrings.login
+        passwordTextField.placeholder = LocalizeStrings.password
+        languageLabel.text = LocalizeStrings.language
+        forgotPasswordButton.setTitle(LocalizeStrings.forgotPassword, for: .normal)
+        loginButton.setTitle(LocalizeStrings.login, for: .normal)
+        register.setTitle(LocalizeStrings.register, for: .normal)
     }
 
     @IBAction private func loginButtonTapped(_ sender: UIButton) {

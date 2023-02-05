@@ -8,7 +8,20 @@
 import UIKit
 
 class ForgotPasswordViewController: BaseViewController {
+    @IBOutlet weak private var topBannerMessage: UILabel!
+    @IBOutlet weak private var sendButton: UIButton!
     @IBOutlet weak private var emailTextField: UITextField!
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        updateLocalization()
+    }
+
+    private func updateLocalization() {
+        topBannerMessage.text = LocalizeStrings.sendLink
+        sendButton.setTitle(LocalizeStrings.send, for: .normal)
+    }
 
     @IBAction private func sendButtonTapped(_ sender: UIButton) {
         let emailToSend = emailTextField.text ?? ""

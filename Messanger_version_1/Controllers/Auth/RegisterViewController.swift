@@ -8,20 +8,22 @@
 import UIKit
 
 class RegisterViewController: BaseViewController {
-    @IBOutlet weak var usernameTextField: UITextField!
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak private var usernameTextField: UITextField!
+    @IBOutlet weak private var emailTextField: UITextField!
+    @IBOutlet weak private var passwordTextField: UITextField!
+    @IBOutlet weak private var registerButton: UIButton!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
-        setup()
+        updateLocalization()
     }
 
-    private func setup() {
-        usernameTextField.placeholder = "Username" // need to localize
-        passwordTextField.placeholder = "Password" // need to localize
-        title = "Register"  // need to localize
+    private func updateLocalization() {
+        title = LocalizeStrings.registration
+        registerButton.setTitle(LocalizeStrings.register, for: .normal)
+        usernameTextField.placeholder = LocalizeStrings.username
+        passwordTextField.placeholder = LocalizeStrings.password
     }
 
     @IBAction private func registerButtonTapped(_ sender: UIButton) {

@@ -27,6 +27,12 @@ class NewConversationViewController: UIViewController {
         setup()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        tableView.frame = view.bounds
+    }
+
     private func setup() {
         view.backgroundColor = .white
 
@@ -36,20 +42,14 @@ class NewConversationViewController: UIViewController {
         view.addSubview(tableView)
 
         searchBar.delegate = self
-        searchBar.placeholder = "Search user..." // need to localize
+        searchBar.placeholder = LocalizeStrings.searchUser
         searchBar.becomeFirstResponder()
 
         navigationController?.navigationBar.topItem?.titleView = searchBar
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", // need to localize
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: LocalizeStrings.cancel,
                                                             style: .done,
                                                             target: self,
                                                             action: #selector(dismissAction))
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        tableView.frame = view.bounds
     }
 
     @objc
