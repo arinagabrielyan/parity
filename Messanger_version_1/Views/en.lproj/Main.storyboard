@@ -81,16 +81,8 @@
                                             </button>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="udu-5J-9Jw">
-                                        <rect key="frame" x="108.33333333333333" y="250.00000000000003" width="176.33333333333337" height="34.333333333333343"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Create new account"/>
-                                        <connections>
-                                            <action selector="createNewAccountButtonTapped:" destination="AEr-Zx-iRz" eventType="touchUpInside" id="UoR-LM-dun"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L8j-mK-15f">
-                                        <rect key="frame" x="131.66666666666666" y="292" width="129.99999999999997" height="27"/>
+                                        <rect key="frame" x="131.66666666666666" y="260" width="129.99999999999997" height="27"/>
                                         <color key="backgroundColor" systemColor="linkColor"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Forgot password?">
@@ -122,20 +114,28 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="udu-5J-9Jw">
+                                        <rect key="frame" x="153" y="307" width="87" height="34.333333333333314"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Register"/>
+                                        <connections>
+                                            <action selector="createNewAccountButtonTapped:" destination="AEr-Zx-iRz" eventType="touchUpInside" id="UoR-LM-dun"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="aeB-g8-PUb" firstAttribute="centerX" secondItem="T6o-8c-17z" secondAttribute="centerX" id="4aN-Y0-vFg"/>
-                                    <constraint firstItem="udu-5J-9Jw" firstAttribute="top" secondItem="FyP-t1-oee" secondAttribute="bottom" constant="10" id="684-WC-cYZ"/>
                                     <constraint firstAttribute="trailing" secondItem="FyP-t1-oee" secondAttribute="trailing" constant="30" id="6VS-jU-1bN"/>
                                     <constraint firstItem="VjI-hl-RcU" firstAttribute="centerX" secondItem="T6o-8c-17z" secondAttribute="centerX" id="7pa-gd-gK1"/>
                                     <constraint firstAttribute="bottom" secondItem="aeB-g8-PUb" secondAttribute="bottom" constant="25" id="88O-65-gzm"/>
                                     <constraint firstItem="FyP-t1-oee" firstAttribute="top" secondItem="T6o-8c-17z" secondAttribute="top" constant="100" id="8YU-u4-PNa"/>
-                                    <constraint firstItem="L8j-mK-15f" firstAttribute="top" secondItem="udu-5J-9Jw" secondAttribute="bottom" constant="7.6666666666666288" id="Dg1-Gn-97W"/>
+                                    <constraint firstItem="L8j-mK-15f" firstAttribute="top" secondItem="FyP-t1-oee" secondAttribute="bottom" constant="20" id="HAF-GV-wIg"/>
                                     <constraint firstItem="FyP-t1-oee" firstAttribute="leading" secondItem="T6o-8c-17z" secondAttribute="leading" constant="30" id="eHp-ae-vGe"/>
                                     <constraint firstItem="aeB-g8-PUb" firstAttribute="top" secondItem="VjI-hl-RcU" secondAttribute="bottom" constant="10" id="fYH-ua-Ssk"/>
                                     <constraint firstItem="udu-5J-9Jw" firstAttribute="centerX" secondItem="FyP-t1-oee" secondAttribute="centerX" id="hz8-UY-mrF"/>
                                     <constraint firstItem="L8j-mK-15f" firstAttribute="centerX" secondItem="udu-5J-9Jw" secondAttribute="centerX" id="mYN-ET-Voj"/>
+                                    <constraint firstItem="udu-5J-9Jw" firstAttribute="top" secondItem="L8j-mK-15f" secondAttribute="bottom" constant="20" id="qQs-Oi-8tk"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -150,12 +150,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="jDi-1f-eNV"/>
                     <connections>
-                        <outlet property="createNewAccount" destination="udu-5J-9Jw" id="OPa-Lb-mdI"/>
                         <outlet property="emailTextField" destination="QSd-H5-rqN" id="4KA-VU-pkK"/>
                         <outlet property="forgotPasswordButton" destination="L8j-mK-15f" id="llL-3s-Rqh"/>
                         <outlet property="languageLabel" destination="VjI-hl-RcU" id="kWJ-8y-RX1"/>
                         <outlet property="loginButton" destination="a84-jA-07e" id="VMB-JL-SBc"/>
                         <outlet property="passwordTextField" destination="rRe-pv-XDo" id="Tda-p5-JHt"/>
+                        <outlet property="register" destination="udu-5J-9Jw" id="9du-WK-o8A"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oTS-oh-qwP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -504,6 +504,7 @@
                     <connections>
                         <outlet property="emailTextField" destination="A7B-hv-gFv" id="M7Z-5p-lj6"/>
                         <outlet property="passwordTextField" destination="nIU-K8-iHr" id="zU6-Xe-OVB"/>
+                        <outlet property="registerButton" destination="wnt-2u-a9m" id="JKY-z8-kJN"/>
                         <outlet property="usernameTextField" destination="XfS-An-4Af" id="qfO-Za-LH1"/>
                     </connections>
                 </viewController>
@@ -573,6 +574,8 @@
                     </view>
                     <connections>
                         <outlet property="emailTextField" destination="bv4-Oz-YDM" id="ere-Qf-bU8"/>
+                        <outlet property="sendButton" destination="L1q-R7-uiE" id="4bh-0P-Fru"/>
+                        <outlet property="topBannerMessage" destination="Ln3-l3-fh4" id="VDf-C9-uja"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AMe-RW-SE8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

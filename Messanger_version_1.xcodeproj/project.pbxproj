@@ -28,8 +28,6 @@
 		6B1152CD296A40C200CCF696 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152CC296A40C200CCF696 /* DatabaseManager.swift */; };
 		6B1152CF296A448C00CCF696 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152CE296A448C00CCF696 /* User.swift */; };
 		6B1152D2296B6C2000CCF696 /* MessageKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6B1152D1296B6C2000CCF696 /* MessageKit */; };
-		6B1152D5296B6C4200CCF696 /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 6B1152D4296B6C4200CCF696 /* JGProgressHUD */; };
-		6B1152D8296B6D9E00CCF696 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6B1152D7296B6D9E00CCF696 /* RealmSwift */; };
 		6B1152E0296F7BFD00CCF696 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152DF296F7BFD00CCF696 /* NewConversationViewController.swift */; };
 		6B1152E2296F7FD200CCF696 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152E1296F7FD200CCF696 /* StorageManager.swift */; };
 		6B1152E62971AC1700CCF696 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152E52971AC1700CCF696 /* Message.swift */; };
@@ -99,12 +97,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B1152D8296B6D9E00CCF696 /* RealmSwift in Frameworks */,
 				6B1152C3296A336400CCF696 /* FirebaseDatabase in Frameworks */,
 				6B1152C1296A336400CCF696 /* FirebaseAuth in Frameworks */,
 				6B1152C5296A336400CCF696 /* FirebaseStorage in Frameworks */,
 				6B1152D2296B6C2000CCF696 /* MessageKit in Frameworks */,
-				6B1152D5296B6C4200CCF696 /* JGProgressHUD in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,7 +141,6 @@
 				6B1152AE2969F70100CCF696 /* Resources */,
 				6B1152AD2969F6F800CCF696 /* Views */,
 				6B1152AC2969F6F100CCF696 /* Controllers */,
-				6B1152AB2969F6EC00CCF696 /* Models */,
 				6B1152972969F61500CCF696 /* AppDelegate.swift */,
 				6B1152992969F61500CCF696 /* SceneDelegate.swift */,
 				6B1118DD2980271D005D59E1 /* GoogleService-Info.plist */,
@@ -170,17 +165,14 @@
 		6B1152AC2969F6F100CCF696 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				6B7FAD31298FB52300260E27 /* MainScreen */,
 				6B1152B32969FFD700CCF696 /* Auth */,
-				6B11529B2969F61500CCF696 /* ChatViewController.swift */,
-				6B1152B6296A004D00CCF696 /* ProfileViewController.swift */,
 				6B1152DF296F7BFD00CCF696 /* NewConversationViewController.swift */,
-				6B1152F029723A2E00CCF696 /* MainScreen.swift */,
 				6BB9427429736B6F00448D33 /* ConversationsViewController.swift */,
-				6BF4271929737E9F00444AD0 /* UserViewController.swift */,
-				6B5DEC0E297C27C4006A171D /* AuthNavigationController.swift */,
-				6BD53A6A297F01120031E0C6 /* PrivateNotesViewController.swift */,
 				6BD53A6E297F25870031E0C6 /* CreateNewNoteViewController.swift */,
 				6B7FAD2F298EFBB000260E27 /* PhotoViewerViewController.swift */,
+				6B11190429834728005D59E1 /* BaseViewController.swift */,
+				6B1152AB2969F6EC00CCF696 /* Models */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -193,7 +185,6 @@
 				6BF427202976462D00444AD0 /* ConversationCell.swift */,
 				6B5DEC10297C4254006A171D /* UserCell.swift */,
 				6BD53A6C297F25090031E0C6 /* PrivateNotesCell.swift */,
-				6B11190429834728005D59E1 /* BaseViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -209,6 +200,7 @@
 		6B1152B32969FFD700CCF696 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				6B5DEC0E297C27C4006A171D /* AuthNavigationController.swift */,
 				6B1152AF2969FFC300CCF696 /* LoginViewController.swift */,
 				6B1152B12969FFD200CCF696 /* RegisterViewController.swift */,
 				6B1152E92972270100CCF696 /* ForgotPasswordViewController.swift */,
@@ -234,6 +226,18 @@
 				6B1118BB29801CC9005D59E1 /* LocaleStorageManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		6B7FAD31298FB52300260E27 /* MainScreen */ = {
+			isa = PBXGroup;
+			children = (
+				6B1152F029723A2E00CCF696 /* MainScreen.swift */,
+				6B11529B2969F61500CCF696 /* ChatViewController.swift */,
+				6B1152B6296A004D00CCF696 /* ProfileViewController.swift */,
+				6BF4271929737E9F00444AD0 /* UserViewController.swift */,
+				6BD53A6A297F01120031E0C6 /* PrivateNotesViewController.swift */,
+			);
+			path = MainScreen;
 			sourceTree = "<group>";
 		};
 		6BA6C988298B09D2001FCB45 /* Localize */ = {
@@ -265,8 +269,6 @@
 				6B1152C2296A336400CCF696 /* FirebaseDatabase */,
 				6B1152C4296A336400CCF696 /* FirebaseStorage */,
 				6B1152D1296B6C2000CCF696 /* MessageKit */,
-				6B1152D4296B6C4200CCF696 /* JGProgressHUD */,
-				6B1152D7296B6D9E00CCF696 /* RealmSwift */,
 			);
 			productName = Messanger_version_1;
 			productReference = 6B1152942969F61500CCF696 /* Messanger_version_1.app */;
@@ -298,8 +300,6 @@
 			packageReferences = (
 				6B1152BF296A336400CCF696 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				6B1152D0296B6C1F00CCF696 /* XCRemoteSwiftPackageReference "MessageKit" */,
-				6B1152D3296B6C4200CCF696 /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
-				6B1152D6296B6D9E00CCF696 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = 6B1152952969F61500CCF696 /* Products */;
 			projectDirPath = "";
@@ -603,22 +603,6 @@
 				minimumVersion = 4.0.0;
 			};
 		};
-		6B1152D3296B6C4200CCF696 /* XCRemoteSwiftPackageReference "JGProgressHUD" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/JonasGessner/JGProgressHUD.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
-		6B1152D6296B6D9E00CCF696 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-swift.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -641,16 +625,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6B1152D0296B6C1F00CCF696 /* XCRemoteSwiftPackageReference "MessageKit" */;
 			productName = MessageKit;
-		};
-		6B1152D4296B6C4200CCF696 /* JGProgressHUD */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6B1152D3296B6C4200CCF696 /* XCRemoteSwiftPackageReference "JGProgressHUD" */;
-			productName = JGProgressHUD;
-		};
-		6B1152D7296B6D9E00CCF696 /* RealmSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6B1152D6296B6D9E00CCF696 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
