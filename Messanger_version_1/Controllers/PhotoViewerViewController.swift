@@ -21,6 +21,12 @@ class PhotoViewerViewController: UIViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        view.backgroundColor = AppColors.blackAndWhite
+    }
+
     func set(url: URL) {
         imageUrl = url
     }
