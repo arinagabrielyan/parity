@@ -55,7 +55,7 @@ class ChatViewController: MessagesViewController, Localizable {
         messageInputBar.inputTextView.backgroundColor = AppColors.mainColor
         messageInputBar.inputTextView.layer.cornerRadius = 10
         messageInputBar.inputTextView.textColor = AppColors.textColor
-        messageInputBar.inputTextView.placeholder = "Type..." // need to localize
+        messageInputBar.inputTextView.placeholder = LocalizeStrings.type
         messageInputBar.inputTextView.placeholderTextColor = AppColors.placeholderColor
         messageInputBar.backgroundView.backgroundColor = AppColors.blackAndWhite
     }
@@ -179,8 +179,8 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         var avatar: Avatar
 
-        avatarView.layer.borderColor = UIColor.black.cgColor
-        avatarView.layer.borderWidth = 1
+        avatarView.layer.borderColor = AppColors.mainColor.cgColor
+        avatarView.layer.borderWidth = 2
 
         if message.sender.senderId == LocaleStorageManager.shared.email {
             if let imageData = selfAvatarData {
@@ -211,6 +211,20 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
 
     var currentSender: MessageKit.SenderType {
         return sender
+    }
+
+    func configureMediaMessageImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+
+        switch message.kind {
+            case .photo(let media):
+                imageView.superview?.backgroundColor = .clear
+                guard let url = media.url else { return }
+                ImageDownloader.load(url: url) { image in
+                    imageView.image = image
+                }
+            default: break
+        }
+
     }
 }
 

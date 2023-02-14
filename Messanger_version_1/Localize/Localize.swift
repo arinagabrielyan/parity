@@ -39,9 +39,9 @@ class LocalizeStrings {
     class var account: String { Localize.language == .en ? "Account" : "Аккаунт" }
     class var logout: String { Localize.language == .en ? "Log out" : "Выйти" }
     class var login: String { Localize.language == .en ? "Log in" : "Войти" }
-    class var useres: String { Localize.language == .en ? "Users" : "Пользователи" }
     class var save: String { Localize.language == .en ? "Save" : "Сохранить" }
     class var chat: String { Localize.language == .en ? "Chat" : "Чат" }
+    class var useres: String { Localize.language == .en ? "Users" : "Пользователи" }
     class var takePhoto: String { Localize.language == .en ? "Take Photo" : "Фотографировать" }
     class var choosePhoto: String { Localize.language == .en ? "Choose Photo" : "Выбрать фото" }
     class var cancel: String { Localize.language == .en ? "Cancel" : "Отмена" }
@@ -50,6 +50,7 @@ class LocalizeStrings {
     class var unlock: String { Localize.language == .en ? "Unlock" : "Разблокировать" }
     class var profile: String { Localize.language == .en ? "Profile" : "Профиль" }
     class var mode: String { Localize.language == .en ? "Mode" : "Тема" }
+    class var type: String { Localize.language == .en ? "Type..." : "Пиши..." }
     class var update: String { Localize.language == .en ? "Update" : "Обновить" }
     class var userNotFound: String { Localize.language == .en ? "User not found" : "Пользователь не найден" }
     class var camera: String { Localize.language == .en ? "Camera" : "Камера" }
