@@ -34,6 +34,27 @@ class NewConversationViewController: UIViewController {
         tableView.frame = view.bounds
     }
 
+    private let messageLabel = UILabel()
+    private func showUserNotFoundMessage() {
+        messageLabel.text = LocalizeStrings.userNotFound
+        messageLabel.textColor = AppColors.textColor
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        tableView.addSubview(messageLabel)
+
+        NSLayoutConstraint.activate([
+            messageLabel.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
+            messageLabel.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 200)
+        ])
+
+        messageLabel.isHidden = false
+    }
+
+    private func hideUserNotFoundMessage() {
+        messageLabel.isHidden = true
+        messageLabel.removeFromSuperview()
+    }
+
     private func setup() {
         view.backgroundColor = AppColors.blackAndWhite
         tableView.backgroundColor = AppColors.blackAndWhite
@@ -80,38 +101,6 @@ class NewConversationViewController: UIViewController {
 
     private func update() {
         tableView.reloadData()
-    }
-
-    func searchUsers(by query: String) {
-        if hasFetch {
-            filterUser(with: query)
-        } else {
-            DatabaseManager.shared.getUsers { result in
-                switch result {
-                    case .success(let users):
-                        self.hasFetch = true
-                        self.users = users
-                        self.filterUser(with: query)
-                    case .failure(let error):
-                        debugPrint("Error: \(error.localizedDescription)")
-                }
-            }
-        }
-    }
-
-    func filterUser(with term: String) {
-        guard hasFetch else { return }
-
-        let email = LocaleStorageManager.shared.email
-
-        results = users.filter { user in
-            if user.email == email {
-                return false
-            }
-            return user.username.hasPrefix(term.lowercased())
-        }
-
-        update()
     }
 }
 extension NewConversationViewController: UITableViewDelegate, UITableViewDataSource {
@@ -161,20 +150,27 @@ extension NewConversationViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text, !text.replacingOccurrences(of: " ", with: "").isEmpty else { return }
 
-        results.removeAll()
-        searchUsers(by: text)
+        self.users.removeAll()
+        self.results.removeAll()
 
-        if hasFetch {
+        DatabaseManager.shared.getUsers { result in
+            switch result {
+                case .success(let users):
+                    for user in users {
+                        if user.username.uppercased().hasPrefix(text.uppercased()) {
+                            self.users.append(user)
+                        }
+                    }
 
-        } else {
-            DatabaseManager.shared.getUsers { result in
-                switch result {
-                    case .success(let users):
-                        self.users = users
-                        self.update()
-                    case .failure(let error):
-                        debugPrint("Error: \(error.localizedDescription)")
-                }
+                    self.results = self.users
+                    if self.results.isEmpty {
+                        self.showUserNotFoundMessage()
+                    } else {
+                        self.hideUserNotFoundMessage()
+                    }
+                    self.update()
+                case .failure(let error):
+                    debugPrint("Error: \(error.localizedDescription)")
             }
         }
     }

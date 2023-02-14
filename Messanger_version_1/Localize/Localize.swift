@@ -51,6 +51,7 @@ class LocalizeStrings {
     class var profile: String { Localize.language == .en ? "Profile" : "Профиль" }
     class var mode: String { Localize.language == .en ? "Mode" : "Тема" }
     class var update: String { Localize.language == .en ? "Update" : "Обновить" }
+    class var userNotFound: String { Localize.language == .en ? "User not found" : "Пользователь не найден" }
     class var camera: String { Localize.language == .en ? "Camera" : "Камера" }
     class var photoLibrary: String { Localize.language == .en ? "Photo Library" : "Библиотека фотографий" }
     class var sendLink: String { Localize.language == .en ? "Link will be send to your email" : "Ссылка будет отправлена на вашу почту" }

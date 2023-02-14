@@ -628,6 +628,27 @@ final class DatabaseManager {
         }
     }
 
+    public func deleteNote(by index: Int) {
+        guard let email = LocaleStorageManager.shared.email else { return }
+
+        self.database.child("notes/\(email.toDatabaseFormat)").observeSingleEvent(of: .value) { snapshot, _ in
+            if var notes = snapshot.value as? [[String: String]] {
+                notes.remove(at: index)
+
+                self.database.child("notes/\(email.toDatabaseFormat)").setValue(notes) { error, _ in
+                    if let _ = error {
+                        debugPrint("Note successfully deleted!!")
+                    } else {
+                        debugPrint("Error: Note delete failed!!")
+                    }
+                }
+            } else {
+                debugPrint("Note delete failed!")
+            }
+        }
+
+    }
+
     public func isRead(conversationId: String?, otherUserEmail: String) {
         guard let conversationId else { return }
 
