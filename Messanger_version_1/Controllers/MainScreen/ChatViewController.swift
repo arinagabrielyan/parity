@@ -51,6 +51,13 @@ class ChatViewController: MessagesViewController, Localizable {
 
         messagesCollectionView.backgroundColor = AppColors.blackAndWhite
         view.backgroundColor = AppColors.blackAndWhite
+
+        messageInputBar.inputTextView.backgroundColor = AppColors.mainColor
+        messageInputBar.inputTextView.layer.cornerRadius = 10
+        messageInputBar.inputTextView.textColor = AppColors.textColor
+        messageInputBar.inputTextView.placeholder = "Type..." // need to localize
+        messageInputBar.inputTextView.placeholderTextColor = AppColors.placeholderColor
+        messageInputBar.backgroundView.backgroundColor = AppColors.blackAndWhite
     }
 
     private func setup() {
