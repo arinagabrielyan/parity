@@ -28,6 +28,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             
             isEnglishLanguage ? Localize.update(language: .en) : Localize.update(language: .rus)
+
+            guard let isDarkMode = LocaleStorageManager.shared.isDarkMode else {
+                ModeManager.update(mode: .light)
+                return
+            }
+
+            isDarkMode ? ModeManager.update(mode: .dark) : ModeManager.update(mode: .light)
+
         } else {
             let authNavigationController = UIStoryboard.main.instantiateViewController(withIdentifier: "AuthNavigationController") as! AuthNavigationController
 

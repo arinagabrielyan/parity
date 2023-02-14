@@ -9,6 +9,6 @@ struct Conversation {
     public let id: String
     public let username: String
     public let otherUserEmail: String
-    public let latestMessage: LatestMessage
+    public var latestMessage: LatestMessage
     public let profileImageUrl: String
 }

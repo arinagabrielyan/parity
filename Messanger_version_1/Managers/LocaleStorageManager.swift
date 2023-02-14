@@ -38,6 +38,15 @@ class LocaleStorageManager {
         }
     }
 
+    var isDarkMode: Bool? {
+        get {
+            userDefaultsStandard.value(forKey: "is_dark_mode") as? Bool
+        }
+        set {
+            userDefaultsStandard.set(newValue, forKey: "is_dark_mode")
+        }
+    }
+
     var profileImageUrl: String? {
         get {
             userDefaultsStandard.value(forKey: "profile_image_url") as? String

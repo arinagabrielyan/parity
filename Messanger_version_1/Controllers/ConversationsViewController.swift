@@ -27,20 +27,29 @@ class ConversationsViewController: BaseViewController, Localizable {
         if firstLoad {
             noConversationYetLabel.isHidden = !conversations.isEmpty
         }
+
+        updateMode()
+        noConversationYetLabel.text = LocalizeStrings.noConversationYet
+        tableView.reloadData()
     }
 
     private func setup() {
         tableView.dataSource = self
         tableView.delegate = self
         noConversationYetLabel.isHidden = true
-        noConversationYetLabel.text = "No conversation yet" // need to localize
         noConversationYetLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnLabel)))
 
         startListeningForConversation()
+        noConversationYetLabel.textColor = AppColors.textColor
     }
 
     func updateLocalization() {
         title = LocalizeStrings.chat
+    }
+
+    private func updateMode() {
+        tableView.backgroundColor = AppColors.blackAndWhite
+        view.backgroundColor = AppColors.blackAndWhite
     }
 
     private func startListeningForConversation() {
@@ -69,20 +78,6 @@ class ConversationsViewController: BaseViewController, Localizable {
         navigationController?.pushViewController(chatViewController, animated: true)
     }
 
-    private func dowloadProfileImageUrl(email: String, completion: @escaping ((URL?) -> Void)) {
-        let userProfilePhotoPath = "\(email.toDatabaseFormat)_profile_image.png"
-
-        StorageManager.shared.downloadURL(with: userProfilePhotoPath) { result in
-            switch result {
-                case .success(let url):
-                    completion(url)
-                case .failure(let error):
-                    print("Error: \(error.localizedDescription)")
-                    completion(nil)
-            }
-        }
-    }
-
     //MARK: - IBAction methods -
 
     @IBAction func createNewConverationButtonTapped(_ sender: UIBarButtonItem) {
@@ -109,6 +104,7 @@ extension ConversationsViewController: UITableViewDataSource, UITableViewDelegat
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationCell", for: indexPath) as! ConversationCell
+        cell.selectionStyle = .none
 
         let conversation = conversations[indexPath.row]
 
@@ -124,7 +120,6 @@ extension ConversationsViewController: UITableViewDataSource, UITableViewDelegat
 
         let cell = tableView.cellForRow(at: indexPath) as! ConversationCell
 
-
         let chatViewController = ChatViewController(otherUserEmail: conversation.otherUserEmail, otherUsername: conversation.username, id: conversation.id)
         chatViewController.companionAvatar =  cell.avatarImageView.image
 
@@ -132,5 +127,19 @@ extension ConversationsViewController: UITableViewDataSource, UITableViewDelegat
         navigationController?.pushViewController(chatViewController, animated: true)
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 80 }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let conversationForDelete = conversations[indexPath.row]
+        if editingStyle == .delete {
+            DatabaseManager.shared.deleteConversationWith(id: conversationForDelete.id) { _ in }
+
+            tableView.beginUpdates()
+            conversations.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.endUpdates()
+        }
+    }
+
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .delete
+    }
 }

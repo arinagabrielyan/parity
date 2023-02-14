@@ -18,7 +18,28 @@ class ProfileViewController: UIViewController, Localizable {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var languageLabel: UILabel!
     @IBOutlet weak var logoutButton: UIButton!
+    @IBOutlet weak var modeLabel: UILabel!
     @IBOutlet weak var changeLanguageControl: UISegmentedControl!
+    @IBOutlet weak var modeChangeControl: UISegmentedControl!
+
+    private func updateMode() {
+        view.backgroundColor = AppColors.blackAndWhite
+
+        usernameTextField.backgroundColor = AppColors.mainColor
+        usernameTextField.textColor = AppColors.textColor
+
+        emailTextField.textColor = AppColors.textColor
+        emailTextField.backgroundColor = AppColors.mainColor
+
+        modeChangeControl.backgroundColor = AppColors.mainColor
+        changeLanguageControl.backgroundColor = AppColors.mainColor
+
+        changeLanguageControl.tintColor = AppColors.textColor
+        modeChangeControl.tintColor = AppColors.textColor
+
+        logoutButton.backgroundColor = AppColors.mainColor
+        logoutButton.setTitleColor(AppColors.red, for: .normal)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +57,8 @@ class ProfileViewController: UIViewController, Localizable {
         languageLabel.text = LocalizeStrings.language
         logoutButton.setTitle(LocalizeStrings.logout, for: .normal)
         updateUsernameButton.setTitle(LocalizeStrings.update, for: .normal)
+
+        updateMode()
     }
 
     override func viewDidLayoutSubviews() {
@@ -47,6 +70,7 @@ class ProfileViewController: UIViewController, Localizable {
 
     private func setup() {
         changeLanguageControl.selectedSegmentIndex = Localize.language == .en ? 0 : 1
+        modeChangeControl.selectedSegmentIndex = ModeManager.mode == .light ? 0 : 1
         saveButton.isEnabled = false
         let image: UIImage?
 
@@ -172,6 +196,20 @@ class ProfileViewController: UIViewController, Localizable {
         controllers.forEach { ($0 as? Localizable)?.updateLocalization() }
     }
 
+    @IBAction func changeModeAction(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+            case 0:
+                ModeManager.update(mode: .light)
+                LocaleStorageManager.shared.isDarkMode = false
+            case 1:
+                ModeManager.update(mode: .dark)
+                LocaleStorageManager.shared.isDarkMode = true
+            default: break
+        }
+        updateMode()
+        controllers.forEach { $0.updateNavigationControllerMode() }
+    }
+
     @IBAction private func logoutButtonTapped(_ sender: UIButton) {
         cleanCredentials()
 
@@ -204,13 +242,16 @@ class ProfileViewController: UIViewController, Localizable {
         LocaleStorageManager.shared.profileImageUrl = nil
         LocaleStorageManager.shared.profileImage = nil
         LocaleStorageManager.shared.isEnglishLanguage = nil
+        LocaleStorageManager.shared.isDarkMode = nil
     }
 
     private func navigateToMainNavigationController() {
         let authNavigationController = UIStoryboard.main.instantiateViewController(withIdentifier: "AuthNavigationController") as! AuthNavigationController
 
         guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
-           sceneDelegate.window?.rootViewController = authNavigationController
+
+        sceneDelegate.window?.rootViewController = authNavigationController
+        authNavigationController.view.backgroundColor = AppColors.blackAndWhite
     }
 }
 

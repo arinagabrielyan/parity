@@ -46,6 +46,13 @@ class ChatViewController: MessagesViewController, Localizable {
         setup()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        messagesCollectionView.backgroundColor = AppColors.blackAndWhite
+        view.backgroundColor = AppColors.blackAndWhite
+    }
+
     private func setup() {
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
@@ -87,7 +94,7 @@ class ChatViewController: MessagesViewController, Localizable {
             self.presentPhotoActionSheet()
         }))
 
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel)) // need to localize
+        actionSheet.addAction(UIAlertAction(title: LocalizeStrings.cancel, style: .cancel))
 
         present(actionSheet, animated: true)
     }
@@ -137,6 +144,7 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
 
         if isNewConverstaion {
             DatabaseManager.shared.createNewConversation(otherUserEmail: otherUserEmail, otherUsername: otherUsername, firstMessage: message) { success in
+
                 if success {
                     self.messages.append(message)
                     self.isNewConverstaion = false
@@ -164,16 +172,21 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         var avatar: Avatar
 
-        // working, need redesign
-        avatarView.layer.borderColor = UIColor.green.withAlphaComponent(0.8).cgColor
+        avatarView.layer.borderColor = UIColor.black.cgColor
         avatarView.layer.borderWidth = 1
 
         if message.sender.senderId == LocaleStorageManager.shared.email {
-            guard let imageData = selfAvatarData else { return }
-
-            avatar = Avatar(image: UIImage(data: imageData) , initials: "")
+            if let imageData = selfAvatarData {
+                avatar = Avatar(image: UIImage(data: imageData) , initials: "")
+            } else {
+                avatar = Avatar(image: nil, initials: LocaleStorageManager.shared.username!.first!.uppercased())
+            }
         } else {
-            avatar = Avatar(image: companionAvatar, initials: "")
+            if let companionAvatar = companionAvatar {
+                avatar = Avatar(image: companionAvatar, initials: "")
+            } else {
+                avatar = Avatar(image: nil, initials: otherUsername.first!.uppercased())
+            }
         }
 
         avatarView.set(avatar: avatar)
@@ -184,6 +197,8 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
     }
 
     func numberOfSections(in messagesCollectionView: MessageKit.MessagesCollectionView) -> Int {
+        DatabaseManager.shared.isRead(conversationId: conversationId, otherUserEmail: otherUserEmail)
+
         return messages.count
     }
 
@@ -191,20 +206,10 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
         return sender
     }
 
-    func configureMediaMessageImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+//    func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
+//      return .custom(reuseIdentifier: "status")
+//    }
 
-        guard let message = message as? Message else { return }
-
-        switch message.kind {
-            case .photo(let photo):
-                guard let imageUrl = photo.url else { return }
-
-                ImageDownloader.load(url: imageUrl, completion: { image in
-                    imageView.image = image
-                })
-            default: break
-        }
-    }
 }
 
 extension ChatViewController: MessageCellDelegate {
@@ -236,16 +241,13 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
             preferredStyle: .actionSheet
         )
 
-        // need to localize
-        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
+        actionSheet.addAction(UIAlertAction(title: LocalizeStrings.cancel, style: .default, handler: { _ in
             self.presentCamera()
         }))
-        // need to localize
-        actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { _ in
+        actionSheet.addAction(UIAlertAction(title: LocalizeStrings.photoLibrary, style: .default, handler: { _ in
             self.presentPhotoPicker()
         }))
-        // need to localize
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        actionSheet.addAction(UIAlertAction(title: LocalizeStrings.cancel, style: .cancel))
 
         present(actionSheet, animated: true)
     }

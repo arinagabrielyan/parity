@@ -8,6 +8,7 @@
 import UIKit
 
 class RegisterViewController: BaseViewController {
+    @IBOutlet weak private var containerView: UIView!
     @IBOutlet weak private var usernameTextField: UITextField!
     @IBOutlet weak private var emailTextField: UITextField!
     @IBOutlet weak private var passwordTextField: UITextField!
@@ -16,7 +17,13 @@ class RegisterViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        setup()
         updateLocalization()
+        updateMode()
+    }
+
+    private func setup() {
+        registerButton.backgroundColor = AppColors.mainButton
     }
 
     private func updateLocalization() {
@@ -24,6 +31,30 @@ class RegisterViewController: BaseViewController {
         registerButton.setTitle(LocalizeStrings.register, for: .normal)
         usernameTextField.placeholder = LocalizeStrings.username
         passwordTextField.placeholder = LocalizeStrings.password
+    }
+
+    private func updateMode() {
+        containerView.backgroundColor = AppColors.blackAndWhite
+        view.backgroundColor = AppColors.blackAndWhite
+        usernameTextField.backgroundColor = AppColors.mainColor
+        emailTextField.backgroundColor = AppColors.mainColor
+        passwordTextField.backgroundColor = AppColors.mainColor
+
+        usernameTextField.attributedPlaceholder = NSAttributedString(
+            string: LocalizeStrings.username,
+            attributes: [NSAttributedString.Key.foregroundColor: AppColors.placeholderColor]
+        )
+
+        emailTextField.attributedPlaceholder = NSAttributedString(
+            string: "Email",
+            attributes: [NSAttributedString.Key.foregroundColor: AppColors.placeholderColor]
+        )
+
+        passwordTextField.attributedPlaceholder = NSAttributedString(
+            string: LocalizeStrings.password,
+            attributes: [NSAttributedString.Key.foregroundColor: AppColors.placeholderColor]
+        )
+        
     }
 
     @IBAction private func registerButtonTapped(_ sender: UIButton) {
