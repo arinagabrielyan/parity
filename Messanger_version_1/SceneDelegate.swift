@@ -40,6 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let authNavigationController = UIStoryboard.main.instantiateViewController(withIdentifier: "AuthNavigationController") as! AuthNavigationController
 
             Localize.update(language: .en)
+            ModeManager.update(mode: .light)
             
             self.window?.rootViewController = authNavigationController
         }

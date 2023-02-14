@@ -25,6 +25,9 @@ class LoginViewController: BaseViewController {
         setup()
         updateLocalization()
         updateMode()
+
+        Localize.update(language: .en)
+        ModeManager.update(mode: .light)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -70,8 +73,6 @@ class LoginViewController: BaseViewController {
             string: LocalizeStrings.password,
             attributes: [NSAttributedString.Key.foregroundColor: AppColors.placeholderColor]
         )
-        
-        updateNavigationControllerMode()
     }
 
     @IBAction private func loginButtonTapped(_ sender: UIButton) {
@@ -151,6 +152,7 @@ class LoginViewController: BaseViewController {
         }
 
         updateMode()
+        controllers.forEach { $0.updateNavigationControllerMode() }
     }
 
     //MARK: - Navigation -
