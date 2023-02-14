@@ -25,6 +25,7 @@ class NewConversationViewController: UIViewController {
         super.viewDidLoad()
 
         setup()
+        fetchConversation()
     }
 
     override func viewDidLayoutSubviews() {
@@ -34,7 +35,9 @@ class NewConversationViewController: UIViewController {
     }
 
     private func setup() {
-        view.backgroundColor = .white
+        view.backgroundColor = AppColors.blackAndWhite
+        tableView.backgroundColor = AppColors.blackAndWhite
+        searchBar.backgroundColor = AppColors.mainColor
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -42,7 +45,11 @@ class NewConversationViewController: UIViewController {
         view.addSubview(tableView)
 
         searchBar.delegate = self
-        searchBar.placeholder = LocalizeStrings.searchUser
+        searchBar.searchTextField.textColor = AppColors.textColor
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(
+            string: LocalizeStrings.searchUser,
+            attributes: [NSAttributedString.Key.foregroundColor: AppColors.placeholderColor]
+        )
         searchBar.becomeFirstResponder()
 
         navigationController?.navigationBar.topItem?.titleView = searchBar
@@ -50,6 +57,20 @@ class NewConversationViewController: UIViewController {
                                                             style: .done,
                                                             target: self,
                                                             action: #selector(dismissAction))
+    }
+
+    private var conversations: [Conversation] = []
+    private func fetchConversation() {
+        guard let currentEmail = LocaleStorageManager.shared.email else { return }
+
+        DatabaseManager.shared.getAllConversations(for: currentEmail) { result in
+            switch result {
+                case .success(let conversations):
+                    self.conversations = conversations
+                case .failure(let error):
+                    debugPrint("Error: \(error.localizedDescription)")
+            }
+        }
     }
 
     @objc
@@ -101,18 +122,38 @@ extension NewConversationViewController: UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 
+        cell.selectionStyle = .none
         cell.textLabel?.text = results[indexPath.row].username
+        cell.textLabel?.textColor = AppColors.textColor
+        cell.backgroundColor = AppColors.mainColor
 
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
         let targetUser = results[indexPath.row]
 
-        dismiss(animated: true) { [weak self] in
-            self?.completion?(targetUser)
+        var userHaveConversation = targetUser
+        var alradyHaveConversation = false
+        for converstaion in conversations {
+            if converstaion.otherUserEmail == targetUser.email {
+                userHaveConversation.conversationId = converstaion.id
+                alradyHaveConversation = true
+            }
+        }
+
+        if alradyHaveConversation {
+            let chatViewController = ChatViewController(otherUserEmail: userHaveConversation.email, otherUsername: userHaveConversation.username, id: userHaveConversation.conversationId)
+
+            let navigationController = UINavigationController(rootViewController: chatViewController)
+
+            modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true)
+        } else {
+            dismiss(animated: true) { [weak self] in
+                self?.completion?(targetUser)
+            }
         }
     }
 }

@@ -35,6 +35,7 @@
 		6B1152EA2972270100CCF696 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152E92972270100CCF696 /* ForgotPasswordViewController.swift */; };
 		6B1152ED297229D300CCF696 /* String+Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152EC297229D300CCF696 /* String+Validator.swift */; };
 		6B1152F129723A2E00CCF696 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1152F029723A2E00CCF696 /* MainScreen.swift */; };
+		6B5B3CA8299BAC740094A628 /* ModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5B3CA7299BAC740094A628 /* ModeManager.swift */; };
 		6B5DEC0F297C27C4006A171D /* AuthNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5DEC0E297C27C4006A171D /* AuthNavigationController.swift */; };
 		6B5DEC11297C4254006A171D /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5DEC10297C4254006A171D /* UserCell.swift */; };
 		6B7FAD30298EFBB000260E27 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7FAD2F298EFBB000260E27 /* PhotoViewerViewController.swift */; };
@@ -75,6 +76,7 @@
 		6B1152E92972270100CCF696 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		6B1152EC297229D300CCF696 /* String+Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Validator.swift"; sourceTree = "<group>"; };
 		6B1152F029723A2E00CCF696 /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
+		6B5B3CA7299BAC740094A628 /* ModeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeManager.swift; sourceTree = "<group>"; };
 		6B5DEC0E297C27C4006A171D /* AuthNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNavigationController.swift; sourceTree = "<group>"; };
 		6B5DEC10297C4254006A171D /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		6B7FAD2F298EFBB000260E27 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 		6B1152962969F61500CCF696 /* Messanger_version_1 */ = {
 			isa = PBXGroup;
 			children = (
+				6B5B3CA6299BAC630094A628 /* Mode */,
 				6BA6C988298B09D2001FCB45 /* Localize */,
 				6B1118DF2980562E005D59E1 /* Helpers */,
 				6B1152C8296A363700CCF696 /* Managers */,
@@ -226,6 +229,14 @@
 				6B1118BB29801CC9005D59E1 /* LocaleStorageManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		6B5B3CA6299BAC630094A628 /* Mode */ = {
+			isa = PBXGroup;
+			children = (
+				6B5B3CA7299BAC740094A628 /* ModeManager.swift */,
+			);
+			path = Mode;
 			sourceTree = "<group>";
 		};
 		6B7FAD31298FB52300260E27 /* MainScreen */ = {
@@ -351,6 +362,7 @@
 				6BD53A71297F33670031E0C6 /* Note.swift in Sources */,
 				6BD53A6D297F25090031E0C6 /* PrivateNotesCell.swift in Sources */,
 				6BA6C98A298B09E8001FCB45 /* Localize.swift in Sources */,
+				6B5B3CA8299BAC740094A628 /* ModeManager.swift in Sources */,
 				6B1152B22969FFD200CCF696 /* RegisterViewController.swift in Sources */,
 				6B11529C2969F61500CCF696 /* ChatViewController.swift in Sources */,
 				6BD53A6F297F25870031E0C6 /* CreateNewNoteViewController.swift in Sources */,

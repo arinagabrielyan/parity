@@ -12,6 +12,7 @@ public struct User {
     let email: String
     var profileImageUrl: String = ""
     var conversation: Conversation? = nil
+    var conversationId: String? = nil
 
     var profileImageName: String {
         return "\(email.toDatabaseFormat)_profile_image.png"

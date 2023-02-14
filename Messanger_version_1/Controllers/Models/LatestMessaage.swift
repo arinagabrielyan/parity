@@ -8,5 +8,5 @@
 struct LatestMessage {
     public let date: String
     public let text: String
-    public let isRead: Bool
+    public var isRead: Bool
 }

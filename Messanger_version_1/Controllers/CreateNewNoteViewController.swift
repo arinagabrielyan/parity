@@ -11,6 +11,7 @@ class CreateNewNoteViewController: UIViewController, Localizable {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var notesTextView: UITextView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
+    private var oldContent: String = ""
 
     var note: Note? = nil
     var isNewNode = false
@@ -27,6 +28,12 @@ class CreateNewNoteViewController: UIViewController, Localizable {
         super.viewWillAppear(animated)
 
         updateLocalization()
+
+        view.backgroundColor = AppColors.blackAndWhite
+        titleTextField.backgroundColor = AppColors.mainColor
+        notesTextView.backgroundColor = AppColors.mainColor
+        titleTextField.textColor = AppColors.textColor
+        notesTextView.textColor = AppColors.textColor
     }
 
     func updateLocalization() {
@@ -39,10 +46,12 @@ class CreateNewNoteViewController: UIViewController, Localizable {
         notesTextView.text = note?.note
 
         notesTextView.layer.cornerRadius = 10
+        notesTextView.delegate = self
         titleTextField.layer.cornerRadius = 10
         titleTextField.becomeFirstResponder()
 
         saveButton.isEnabled = false
+        oldContent = notesTextView.text
     }
 
     @IBAction func titleTextFieldValueChanged(_ sender: UITextField) {
@@ -54,5 +63,14 @@ class CreateNewNoteViewController: UIViewController, Localizable {
         completion?(titleTextField.text ?? "", notesTextView.text, isNewNode)
 
         navigationController?.popViewController(animated: true)
+    }
+}
+extension CreateNewNoteViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        if !isNewNode {
+            saveButton.isEnabled = oldContent != textView.text
+        } else {
+            saveButton.isEnabled = textView.hasText
+        }
     }
 }

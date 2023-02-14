@@ -21,41 +21,42 @@ class PrivateNotesViewController: BaseViewController, Localizable {
         super.viewDidLoad()
 
         setup()
+        faceIdCheck()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if needToCheckFaceID {
-            faceIdCheck()
-            fetchNotes()
-        }
-
         unlockButton.setTitle(LocalizeStrings.unlock, for: .normal)
+        updateMode()
+        tableView.reloadData()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    private func updateMode() {
+        coverView.backgroundColor = AppColors.blackAndWhite
+        unlockButton.backgroundColor = AppColors.mainButton
+        view.backgroundColor = AppColors.blackAndWhite
+        tableView.backgroundColor = AppColors.blackAndWhite
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
 
         if needToSaveNotes {
-            needToCheckFaceID = true
-            addButton.isHidden = true
-            coverView.isHidden = false
-
             DatabaseManager.shared.save(notes: self.notes) { _ in }
         }
     }
-
-    func updateLocalization() {
-        title = LocalizeStrings.privateNote
-    }
-
+    
     private func setup() {
         tableView.delegate = self
         tableView.dataSource = self
 
         addButton.isHidden = true
         coverView.isHidden = false
+    }
+
+   public func updateLocalization() {
+        title = LocalizeStrings.privateNote
     }
 
     private func fetchNotes() {
@@ -77,6 +78,8 @@ class PrivateNotesViewController: BaseViewController, Localizable {
                     DispatchQueue.main.async {
                         self.coverView.isHidden = true
                         self.addButton.isHidden = false
+
+                        self.fetchNotes()
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -116,13 +119,14 @@ class PrivateNotesViewController: BaseViewController, Localizable {
 
         needToSaveNotes = false
         createNewNoteViewController.isNewNode = true
-        createNewNoteViewController.title = "New Note" // need to localize
+        createNewNoteViewController.title = LocalizeStrings.newNote
         navigationController?.pushViewController(createNewNoteViewController, animated: true)
     }
 
     //MARK: - IBAction methods -
 
     @IBAction func addNoteButtonTapped(_ sender: UIBarButtonItem) {
+        needToCheckFaceID = false
         navigateToNewNoteViewController()
     }
 
@@ -131,12 +135,11 @@ class PrivateNotesViewController: BaseViewController, Localizable {
     }
 }
 extension PrivateNotesViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        notes.count
-    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { notes.count }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PrivateNotesCell", for: indexPath) as! PrivateNotesCell
+        cell.selectionStyle = .none
 
         let note = notes[indexPath.row]
 
@@ -147,6 +150,7 @@ extension PrivateNotesViewController: UITableViewDelegate, UITableViewDataSource
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let note = notes[indexPath.row]
+        needToCheckFaceID = false
 
         let createNewNoteViewController = UIStoryboard.main.instantiateViewController(withIdentifier: "CreateNewNoteViewController") as! CreateNewNoteViewController
 
@@ -154,17 +158,14 @@ extension PrivateNotesViewController: UITableViewDelegate, UITableViewDataSource
             let date = self.dateFormatter.string(from: Date())
 
             self.notes[indexPath.row] = .init(title: title, note: note, date: date)
-            self.needToCheckFaceID = false
             self.needToSaveNotes = true
 
             self.tableView.reloadData()
         }
 
-        needToSaveNotes = false
-        let date = self.dateFormatter.string(from: Date())
+        let date = dateFormatter.string(from: Date())
         createNewNoteViewController.note = .init(title: note.title, note: note.note, date: date)
         createNewNoteViewController.title = "Edit Note" // need to localize
-
         navigationController?.pushViewController(createNewNoteViewController, animated: true)
     }
 

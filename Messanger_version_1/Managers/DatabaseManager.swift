@@ -600,51 +600,54 @@ final class DatabaseManager {
         }
     }
 
-//    public func isRead(conversationId: String, otherUserEmail: String) {
-//        database.child("\(conversationId)/messages").observeSingleEvent(of: .value) { snpashot, text in
-//            guard
-//                let messages = snpashot.value as? [[String: Any]]
-//            else { return }
-//
-//            let onlyOtherUserMessages: [[String: Any]] = messages.compactMap {
-//                if $0["sender_email"] as! String == otherUserEmail {
-//                    return $0
-//                } else {
-//                    return nil
-//                }
-//            }
-//
-//            let newMessages = onlyOtherUserMessages.map {
-//               if let username = $0["user_name"] as? String,
-//                    let _ = $0["is_read"] as? Bool,
-//                    let messageId = $0["id"] as? String,
-//                    let content = $0["content"] as? String,
-//                    let senderEmail = $0["sender_email"] as? String,
-//                    let type = $0["type"] as? String,
-//                    let date = $0["date"] as? String
-//                {
-//                   return [
-//                       "id": messageId,
-//                       "username": username,
-//                       "type": type,
-//                       "content": content,
-//                       "date": date,
-//                       "sender_email": senderEmail,
-//                       "is_read": true
-//                   ]
-//               } else {
-//                   return [:]
-//               }
-//            }
-//
-//            self.database.child("\(conversationId)/messages").setValue(newMessages) { error, _ in
-//
-//                return
-//            }
-//
-//            return
-//        }
-//    }
+    public func deleteConversationWith(id: String, completion: @escaping ((Bool) -> Void)) {
+        guard let email = LocaleStorageManager.shared.email else { return }
+        let referenceToDatabase = database.child("\(email.toDatabaseFormat)/conversations")
+
+        var iterator = 0
+        referenceToDatabase.observeSingleEvent(of: .value) { snapshot in
+            if var conversations = snapshot.value as? [[String: Any]] {
+                for conversation in conversations {
+                    if let conversationId = conversation["id"] as? String {
+                        if conversationId == id { break }
+                    }
+                    iterator += 1
+                }
+
+                conversations.remove(at: iterator)
+
+                referenceToDatabase.setValue(conversations) { error, _ in
+                    if let error {
+                        debugPrint("Error: \(error.localizedDescription)")
+                        completion(false)
+                    } else {
+                        completion(true)
+                    }
+                }
+            }
+        }
+    }
+
+    public func isRead(conversationId: String?, otherUserEmail: String) {
+        guard let conversationId else { return }
+
+        database.child("\(conversationId)/messages").observeSingleEvent(of: .value) { snpashot, text in
+            guard
+                var messages = snpashot.value as? [[String: Any]]
+            else { return }
+
+            guard
+                let index = messages.lastIndex(where: { $0["sender_email"] as! String == otherUserEmail }),
+                messages[index]["is_read"] as! Bool != true
+            else { return }
+
+            messages[index]["is_read"] = true
+
+            self.database.child("\(conversationId)/messages").setValue(messages) { _, _ in }
+
+            return
+        }
+    }
 
     //MARK: - DatabaseError -
 

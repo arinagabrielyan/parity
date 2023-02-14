@@ -8,23 +8,34 @@
 import UIKit
 
 class LoginViewController: BaseViewController {
+    @IBOutlet weak private var containerView: UIView!
     @IBOutlet weak private var emailTextField: UITextField!
     @IBOutlet weak private var passwordTextField: UITextField!
     @IBOutlet weak private var languageLabel: UILabel!
     @IBOutlet weak private var register: UIButton!
     @IBOutlet weak private var forgotPasswordButton: UIButton!
     @IBOutlet weak private var loginButton: UIButton!
+    @IBOutlet weak private var modeLabel: UILabel!
+    @IBOutlet weak private var modeChangeSegmentedControl: UISegmentedControl!
+    @IBOutlet weak private var languageChangeSegmentedControl: UISegmentedControl!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setup()
         updateLocalization()
+        updateMode()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
         hideActivityIndicator()
+    }
+
+    private func setup() {
+        loginButton.backgroundColor = AppColors.mainButton
+        forgotPasswordButton.backgroundColor = AppColors.mainButton
     }
 
     private func updateLocalization() {
@@ -34,6 +45,33 @@ class LoginViewController: BaseViewController {
         forgotPasswordButton.setTitle(LocalizeStrings.forgotPassword, for: .normal)
         loginButton.setTitle(LocalizeStrings.login, for: .normal)
         register.setTitle(LocalizeStrings.register, for: .normal)
+        modeLabel.text = LocalizeStrings.mode
+        modeChangeSegmentedControl.tintColor = AppColors.textColor
+    }
+
+    private func updateMode() {
+        view.backgroundColor = AppColors.blackAndWhite
+        containerView.backgroundColor = AppColors.blackAndWhite
+        emailTextField.backgroundColor = AppColors.mainColor
+        emailTextField.textColor = AppColors.textColor
+        passwordTextField.backgroundColor = AppColors.mainColor
+        passwordTextField.textColor = AppColors.textColor
+        languageChangeSegmentedControl.backgroundColor = AppColors.mainColor
+        modeChangeSegmentedControl.backgroundColor = AppColors.mainColor
+
+        modeChangeSegmentedControl.tintColor = AppColors.textColor
+
+        emailTextField.attributedPlaceholder = NSAttributedString(
+            string: "Email",
+            attributes: [NSAttributedString.Key.foregroundColor: AppColors.placeholderColor]
+        )
+
+        passwordTextField.attributedPlaceholder = NSAttributedString(
+            string: LocalizeStrings.password,
+            attributes: [NSAttributedString.Key.foregroundColor: AppColors.placeholderColor]
+        )
+        
+        updateNavigationControllerMode()
     }
 
     @IBAction private func loginButtonTapped(_ sender: UIButton) {
@@ -99,6 +137,20 @@ class LoginViewController: BaseViewController {
         }
 
         updateLocalization()
+    }
+
+    @IBAction private func modeChangeAction(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+            case 0:
+                ModeManager.update(mode: .light)
+                LocaleStorageManager.shared.isDarkMode = false
+            case 1:
+                ModeManager.update(mode: .dark)
+                LocaleStorageManager.shared.isDarkMode = true
+            default: break
+        }
+
+        updateMode()
     }
 
     //MARK: - Navigation -

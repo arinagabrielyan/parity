@@ -16,6 +16,7 @@ class UserViewController: BaseViewController, Localizable {
 
         setup()
         fetchUsers()
+        fetchConversation()
     }
 
     func updateLocalization() {
@@ -25,6 +26,14 @@ class UserViewController: BaseViewController, Localizable {
     private func setup() {
         tableView.delegate = self
         tableView.dataSource = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        tableView.backgroundColor = AppColors.blackAndWhite
+        view.backgroundColor = AppColors.blackAndWhite
+        tableView.reloadData()
     }
 
     private func fetchUsers() {
@@ -38,6 +47,20 @@ class UserViewController: BaseViewController, Localizable {
             }
         }
     }
+
+    private var conversations: [Conversation] = []
+    private func fetchConversation() {
+        guard let currentEmail = LocaleStorageManager.shared.email else { return }
+
+        DatabaseManager.shared.getAllConversations(for: currentEmail) { result in
+            switch result {
+                case .success(let conversations):
+                    self.conversations = conversations
+                case .failure(let error):
+                    debugPrint("Error: \(error.localizedDescription)")
+            }
+        }
+    }
 }
 
 //MARK: - TableViewDataSource, Delegate -
@@ -47,6 +70,7 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
+        cell.selectionStyle = .none
 
         let conversation = users[indexPath.row]
 
@@ -56,15 +80,20 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let targetUser = users[indexPath.row]
+        tableView.deselectRow(at: indexPath, animated: true)
+        var targetUser = users[indexPath.row]
 
-        let chatViewController = ChatViewController(otherUserEmail: targetUser.email, otherUsername: targetUser.username)
+        let haveConversation = conversations.filter { $0.otherUserEmail == targetUser.email }
+
+        if !haveConversation.isEmpty {
+            targetUser.conversationId = haveConversation.first!.id
+        }
+
+        let chatViewController = ChatViewController(otherUserEmail: targetUser.email, otherUsername: targetUser.username, id: targetUser.conversationId)
 
         let navigationController = UINavigationController(rootViewController: chatViewController)
 
         modalPresentationStyle = .fullScreen
         present(navigationController, animated: true)
     }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 50 }
 }

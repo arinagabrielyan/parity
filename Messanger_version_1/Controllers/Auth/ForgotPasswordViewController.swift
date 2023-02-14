@@ -16,11 +16,27 @@ class ForgotPasswordViewController: BaseViewController {
         super.viewWillAppear(animated)
 
         updateLocalization()
+        updateMode()
+        setup()
+    }
+
+    private func setup() {
+        title = LocalizeStrings.restorePassword
+        sendButton.backgroundColor = .link
     }
 
     private func updateLocalization() {
         topBannerMessage.text = LocalizeStrings.sendLink
         sendButton.setTitle(LocalizeStrings.send, for: .normal)
+    }
+
+    private func updateMode() {
+        view.backgroundColor = AppColors.blackAndWhite
+        emailTextField.backgroundColor = AppColors.mainColor
+        emailTextField.attributedPlaceholder = NSAttributedString(
+            string: "Email",
+            attributes: [NSAttributedString.Key.foregroundColor: AppColors.placeholderColor]
+        )
     }
 
     @IBAction private func sendButtonTapped(_ sender: UIButton) {
@@ -36,7 +52,7 @@ class ForgotPasswordViewController: BaseViewController {
                     self.showAlert(
                         title: "Success",  // need to localize
                         message: "Link for recover password sent to \(emailToSend)",  // need to localize
-                        button: "Ok") { _ in  // need to localize
+                        button: "Ok") { _ in 
                             self.popToAuthNavigationController()
                         }
                 case .failure(let error):
