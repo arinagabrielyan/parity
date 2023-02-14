@@ -37,10 +37,16 @@ class UserViewController: BaseViewController, Localizable {
     }
 
     private func fetchUsers() {
+        let email = LocaleStorageManager.shared.email!
+
         DatabaseManager.shared.getUsers { result in
             switch result {
                 case .success(let users):
-                    self.users = users
+                    for user in users {
+                        if user.email != email {
+                            self.users.append(user)
+                        }
+                    }
                     self.tableView.reloadData()
                 case .failure(let error):
                     debugPrint("\(#function) error: ", error.localizedDescription)
@@ -72,9 +78,9 @@ extension UserViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
         cell.selectionStyle = .none
 
-        let conversation = users[indexPath.row]
+        let user = users[indexPath.row]
 
-        cell.set(username: conversation.username, email: conversation.email)
+        cell.set(username: user.username, email: user.email, url: user.profileImageUrl)
 
         return cell
     }

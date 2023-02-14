@@ -212,11 +212,6 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
     var currentSender: MessageKit.SenderType {
         return sender
     }
-
-//    func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
-//      return .custom(reuseIdentifier: "status")
-//    }
-
 }
 
 extension ChatViewController: MessageCellDelegate {

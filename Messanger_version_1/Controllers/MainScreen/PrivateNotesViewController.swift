@@ -169,6 +169,22 @@ extension PrivateNotesViewController: UITableViewDelegate, UITableViewDataSource
         navigationController?.pushViewController(createNewNoteViewController, animated: true)
     }
 
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let conversationForDelete = notes[indexPath.row]
+        if editingStyle == .delete {
+            DatabaseManager.shared.deleteNote(by: indexPath.row)
+
+            tableView.beginUpdates()
+            notes.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.endUpdates()
+        }
+    }
+
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .delete
+    }
+
     private var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d, h:mm a"
