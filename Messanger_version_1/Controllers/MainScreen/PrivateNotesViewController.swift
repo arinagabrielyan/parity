@@ -46,7 +46,7 @@ class PrivateNotesViewController: BaseViewController, Localizable {
             DatabaseManager.shared.save(notes: self.notes) { _ in }
         }
     }
-    
+
     private func setup() {
         tableView.delegate = self
         tableView.dataSource = self

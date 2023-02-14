@@ -10,14 +10,13 @@ import UIKit
 // Need for Localization
 public var controllers: [UIViewController] = []
 
-
 class MainScreen: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.navigationItem.setHidesBackButton(true, animated: true)
 
-        view.backgroundColor = AppColors.blackAndWhite
+//        view.backgroundColor = AppColors.blackAndWhite
 
         guard let viewControllers = self.viewControllers else { return }
 
