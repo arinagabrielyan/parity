@@ -1029,19 +1029,8 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </stackView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="89k-5U-hNr">
-                                <rect key="frame" x="178" y="620" width="37" height="37"/>
+                                <rect key="frame" x="178" y="590" width="37" height="37"/>
                             </activityIndicatorView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="22L-fa-TsD">
-                                <rect key="frame" x="156.66666666666666" y="565" width="80" height="35"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="zt1-d1-KJ0"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Update"/>
-                                <connections>
-                                    <action selector="updateUsernameButtonTapped:" destination="nK7-uB-TTl" eventType="touchUpInside" id="4iC-43-Wvl"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Nn3-UA-Rbw"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1049,14 +1038,12 @@
                             <constraint firstItem="Nn3-UA-Rbw" firstAttribute="bottom" secondItem="CSb-GP-hag" secondAttribute="bottom" constant="33" id="0yS-ao-Phr"/>
                             <constraint firstItem="89k-5U-hNr" firstAttribute="centerX" secondItem="Nn3-UA-Rbw" secondAttribute="centerX" id="44P-N3-uJO"/>
                             <constraint firstItem="zsJ-Og-fTq" firstAttribute="top" secondItem="tVt-y5-umC" secondAttribute="bottom" constant="20" id="DKq-1L-Krl"/>
-                            <constraint firstItem="22L-fa-TsD" firstAttribute="top" secondItem="zsJ-Og-fTq" secondAttribute="bottom" constant="15" id="Lbg-P8-ZRh"/>
                             <constraint firstItem="tVt-y5-umC" firstAttribute="top" secondItem="Nn3-UA-Rbw" secondAttribute="top" constant="30" id="Nwv-A4-VAl"/>
                             <constraint firstItem="CSb-GP-hag" firstAttribute="centerX" secondItem="NhW-pw-gEJ" secondAttribute="centerX" id="XW3-IZ-bz7"/>
                             <constraint firstItem="tVt-y5-umC" firstAttribute="centerX" secondItem="NhW-pw-gEJ" secondAttribute="centerX" id="hlk-qd-D9I"/>
-                            <constraint firstItem="22L-fa-TsD" firstAttribute="centerX" secondItem="NhW-pw-gEJ" secondAttribute="centerX" id="jXP-DW-K4l"/>
                             <constraint firstItem="CSb-GP-hag" firstAttribute="centerX" secondItem="Nn3-UA-Rbw" secondAttribute="centerX" id="jcB-vp-T0S"/>
                             <constraint firstItem="zsJ-Og-fTq" firstAttribute="centerX" secondItem="tVt-y5-umC" secondAttribute="centerX" id="kQ2-D5-NeV"/>
-                            <constraint firstItem="89k-5U-hNr" firstAttribute="top" secondItem="22L-fa-TsD" secondAttribute="bottom" constant="20" id="ulk-2z-Trb"/>
+                            <constraint firstItem="89k-5U-hNr" firstAttribute="top" secondItem="zsJ-Og-fTq" secondAttribute="bottom" constant="40" id="yuy-NN-WtJ"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Profile" id="bXg-7O-DNp"/>
@@ -1078,7 +1065,6 @@
                         <outlet property="modeChangeControl" destination="Fju-2C-u5t" id="ra3-3Y-Br9"/>
                         <outlet property="modeLabel" destination="Sjc-eP-Us8" id="UBf-vI-UU6"/>
                         <outlet property="saveButton" destination="SNY-Lu-gho" id="UW9-xW-38j"/>
-                        <outlet property="updateUsernameButton" destination="22L-fa-TsD" id="41c-WL-xBT"/>
                         <outlet property="usernameLabel" destination="VxL-Zx-DTC" id="Snu-hN-T3F"/>
                         <outlet property="usernameTextField" destination="JYc-xd-vXp" id="w7p-dZ-gAF"/>
                     </connections>

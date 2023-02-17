@@ -93,10 +93,10 @@ class ChatViewController: MessagesViewController, Localizable {
     private func presentInputActionSheet() {
         let actionSheet = UIAlertController(
             title: "Attach Media", // need to localize
-            message: "What would you like to attach?", // need to localize
+            message: nil,
             preferredStyle: .actionSheet
         )
-
+        
         actionSheet.addAction(UIAlertAction(title: "Photo", style: .default, handler: { _ in // need to localize
             self.presentPhotoActionSheet()
         }))
@@ -257,7 +257,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
             preferredStyle: .actionSheet
         )
 
-        actionSheet.addAction(UIAlertAction(title: LocalizeStrings.cancel, style: .default, handler: { _ in
+        actionSheet.addAction(UIAlertAction(title: LocalizeStrings.camera, style: .default, handler: { _ in
             self.presentCamera()
         }))
         actionSheet.addAction(UIAlertAction(title: LocalizeStrings.photoLibrary, style: .default, handler: { _ in
