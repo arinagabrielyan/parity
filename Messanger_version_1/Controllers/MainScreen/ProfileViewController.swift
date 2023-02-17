@@ -10,7 +10,6 @@ import UIKit
 class ProfileViewController: UIViewController, Localizable {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var avatarImageView: UIImageView!
-    @IBOutlet weak var updateUsernameButton: UIButton!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -56,7 +55,6 @@ class ProfileViewController: UIViewController, Localizable {
         usernameLabel.text = LocalizeStrings.username
         languageLabel.text = LocalizeStrings.language
         logoutButton.setTitle(LocalizeStrings.logout, for: .normal)
-        updateUsernameButton.setTitle(LocalizeStrings.update, for: .normal)
 
         updateMode()
     }
@@ -89,7 +87,6 @@ class ProfileViewController: UIViewController, Localizable {
         emailTextField.text = LocaleStorageManager.shared.email
 
         emailTextField.isEnabled = false
-        updateUsernameButton.alpha = 0
     }
 
     func updateLocalization() {
@@ -100,6 +97,8 @@ class ProfileViewController: UIViewController, Localizable {
     private func avatarTapped() {
         presentPhotoActionSheet()
     }
+
+    private var needUpdateProfileImage: Bool = false
 
     private func saveProfileImage() {
         guard
@@ -133,6 +132,28 @@ class ProfileViewController: UIViewController, Localizable {
         }
     }
 
+    private func updateUsername() {
+        guard let username = usernameTextField.text else { return }
+
+        showActivityIndicator()
+
+        DatabaseManager.shared.update(user: .username(username)) { result in
+            switch result {
+                case .success(_):
+                    self.hideActivityIndicator()
+                    LocaleStorageManager.shared.username = username
+
+                    DispatchQueue.main.async {
+                        self.usernameTextField.resignFirstResponder()
+                    }
+
+                case .failure(let error):
+                    self.hideActivityIndicator()
+                    debugPrint("Error: ", error.localizedDescription)
+            }
+        }
+    }
+
     private func showActivityIndicator() {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
@@ -147,31 +168,17 @@ class ProfileViewController: UIViewController, Localizable {
 
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
         showActivityIndicator()
-        saveProfileImage()
-    }
 
-    @IBAction func updateUsernameButtonTapped(_ sender: UIButton) {
-        guard let username = usernameTextField.text else { return }
-
-        showActivityIndicator()
-
-        DatabaseManager.shared.update(user: .username(username)) { result in
-            switch result {
-                case .success(_):
-                    UIView.animate(withDuration: 0.25) {
-                        self.updateUsernameButton.alpha = 0
-                    }
-                    self.hideActivityIndicator()
-                    LocaleStorageManager.shared.username = username
-
-                    DispatchQueue.main.async {
-                        self.usernameTextField.resignFirstResponder()
-                    }
-
-                case .failure(let error):
-                    self.hideActivityIndicator()
-                    debugPrint("Error: ", error.localizedDescription)
-            }
+        switch (needUpdateUsername, needUpdateProfileImage) {
+            case (true, true):
+                saveProfileImage()
+                updateUsername()
+            case (false, true):
+                saveProfileImage()
+            case (true, false):
+                updateUsername()
+            default:
+                break
         }
     }
 
@@ -191,7 +198,6 @@ class ProfileViewController: UIViewController, Localizable {
         usernameLabel.text = LocalizeStrings.username
         languageLabel.text = LocalizeStrings.language
         logoutButton.setTitle(LocalizeStrings.logout, for: .normal)
-        updateUsernameButton.setTitle(LocalizeStrings.update, for: .normal)
 
         controllers.forEach { ($0 as? Localizable)?.updateLocalization() }
     }
@@ -217,22 +223,17 @@ class ProfileViewController: UIViewController, Localizable {
         navigateToMainNavigationController()
     }
 
+    private var needUpdateUsername: Bool = false
+
     @IBAction func usernameTextFieldAction(_ sender: UITextField) {
         let oldUsername = LocaleStorageManager.shared.username
 
         if sender.text == oldUsername {
-            UIView.animate(withDuration: 0.25) {
-                self.updateUsernameButton.alpha = 0
-            }
+            saveButton.isEnabled = false
+            needUpdateUsername = false
         } else {
-            UIView.animate(withDuration: 0.25) {
-                self.updateUsernameButton.alpha = 1
-                self.updateUsernameButton.transform = .init(scaleX: 1.2, y: 1.2)
-            } completion: { _ in
-                UIView.animate(withDuration: 0.25) {
-                    self.updateUsernameButton.transform = .init(scaleX: 1.0, y: 1.0)
-                }
-            }
+            saveButton.isEnabled = true
+            needUpdateUsername = true
         }
     }
 
@@ -300,6 +301,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         guard let selectedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else { return }
         self.avatarImageView.image = selectedImage
         self.saveButton.isEnabled = true
+        needUpdateProfileImage = true
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
